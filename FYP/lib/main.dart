@@ -16,6 +16,7 @@ import 'viewmodels/vm_navigation.dart';
 import 'viewmodels/vm_insight.dart';
 import 'viewmodels/vm_insight_stats.dart';
 import 'viewmodels/vm_mealdetail.dart';
+import 'viewmodels/vm_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -41,6 +42,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => InsightViewModel()),
         ChangeNotifierProvider(create: (_) => InsightStatsViewModel()),
         ChangeNotifierProvider(create: (_) => MealDetailViewModel()),
+        ChangeNotifierProvider(create: (_) => ThemeViewModel()),
       ],
       child: const MyApp(),
     ),

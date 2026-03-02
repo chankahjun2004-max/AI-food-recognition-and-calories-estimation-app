@@ -23,9 +23,9 @@ class MealDetailView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Meal Detail"),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        foregroundColor: Colors.black,
+        foregroundColor: Theme.of(context).textTheme.titleLarge?.color,
         actions: [
           if (vm.isDeleting)
             const Center(
@@ -45,7 +45,7 @@ class MealDetailView extends StatelessWidget {
             ),
         ],
       ),
-      backgroundColor: const Color(0xFFF3F8F3),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: meal == null
           ? const Center(
               child: Text(
@@ -77,9 +77,14 @@ class MealDetailView extends StatelessWidget {
                     ),
                   Text(
                     meal.dateTime.toLocal().toString(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
-                      color: Colors.black54,
+                      color: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.color
+                              ?.withOpacity(0.7) ??
+                          Colors.black54,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -107,7 +112,8 @@ class MealDetailView extends StatelessWidget {
                         final FoodItemModel item = meal.items[index];
                         return ListTile(
                           title: Text(item.name),
-                          subtitle: Text(item.status),
+                          subtitle: Text(
+                              "${item.status}${item.estimatedGrams != null ? ' • ${item.estimatedGrams!.toStringAsFixed(0)}g' : ''}"),
                           trailing: item.calories == null
                               ? null
                               : Text(

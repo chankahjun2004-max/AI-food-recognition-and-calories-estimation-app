@@ -12,6 +12,10 @@ class InsightViewModel extends ChangeNotifier {
   List<FoodItemModel> results = [];
   // Multi-selection state
   final Set<String> _selectedItemNames = {};
+
+  // Custom user-adjusted grams for selected items
+  final Map<String, double> _editedGrams = {};
+
   bool showEstimationView = false;
   bool isSaving = false;
 
@@ -22,18 +26,44 @@ class InsightViewModel extends ChangeNotifier {
     return results
         .where((item) => _selectedItemNames.contains(item.name))
         .map((item) {
-      // Ensure calories and macros are populated
       final nutInfo = nutrientDatabase[item.name];
-      double? estimatedCals = item.calories ?? nutInfo?.calories;
-      double? estimatedPro = item.protein ?? nutInfo?.protein;
-      double? estimatedFat = item.fat ?? nutInfo?.fat;
-      double? estimatedCarbs = item.carbs ?? nutInfo?.carbs;
 
+      // Determine the grams to use: edited by user, or estimated by backend, or default to 100g
+      double currentGrams =
+          _editedGrams[item.name] ?? item.estimatedGrams ?? 100.0;
+      double ratio = currentGrams / 100.0;
+
+      double? estimatedCals;
+      if (_editedGrams.containsKey(item.name) && nutInfo != null) {
+        estimatedCals = nutInfo.calories * ratio;
+      } else {
+        // If not edited, use the precise backend string, or fallback to nutrient DB scaled
+        estimatedCals = item.calories ??
+            (nutInfo?.calories != null ? nutInfo!.calories * ratio : null);
+      }
+
+      double? estimatedPro =
+          nutInfo != null ? nutInfo.protein * ratio : item.protein;
+      double? estimatedFat = nutInfo != null ? nutInfo.fat * ratio : item.fat;
+      double? estimatedCarbs =
+          nutInfo != null ? nutInfo.carbs * ratio : item.carbs;
+      double? estimatedFiber =
+          nutInfo != null ? nutInfo.fiber * ratio : item.fiber;
+      double? estimatedSugar =
+          nutInfo != null ? nutInfo.sugar * ratio : item.sugar;
+      double? estimatedSodium =
+          nutInfo != null ? nutInfo.sodium * ratio : item.sodium;
+
+      // Make sure we pass along the estimatedGrams from the backend
       return item.copyWith(
         calories: estimatedCals,
         protein: estimatedPro,
         fat: estimatedFat,
         carbs: estimatedCarbs,
+        fiber: estimatedFiber,
+        sugar: estimatedSugar,
+        sodium: estimatedSodium,
+        estimatedGrams: currentGrams,
         setCaloriesNull: estimatedCals == null,
       );
     }).toList();
@@ -41,6 +71,12 @@ class InsightViewModel extends ChangeNotifier {
 
   double get totalCalories {
     return selectedItems.fold(0.0, (sum, item) => sum + (item.calories ?? 0.0));
+  }
+
+  void updateGrams(String itemName, double grams) {
+    if (grams < 0) grams = 0;
+    _editedGrams[itemName] = grams;
+    notifyListeners();
   }
 
   void loadFromArguments(Object? args) {

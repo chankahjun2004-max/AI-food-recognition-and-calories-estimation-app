@@ -2,3 +2,8 @@
 .vscode/
 *.log
 .DS_Store
+
+# Backend ignores
+backend/venv/
+backend/__pycache__/
+backend/dpt_swin2_tiny_256.pt

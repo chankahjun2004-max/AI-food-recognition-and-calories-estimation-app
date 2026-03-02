@@ -22,6 +22,9 @@ RUN pip install --no-cache-dir opencv-python-headless
 # Install Ultralytics explicitly (it will use the already installed CPU torch and opencv-headless)
 RUN pip install --no-cache-dir ultralytics
 
+# Install timm specifically for MiDaS support (Version 0.6.13 to avoid size mismatch bugs)
+RUN pip install --no-cache-dir timm==0.6.13
+
 # Copy the requirements file into the container
 COPY requirements.txt .
 

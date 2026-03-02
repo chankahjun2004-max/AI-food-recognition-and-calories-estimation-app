@@ -11,12 +11,15 @@ class HistoryView extends StatelessWidget {
     final vm = context.watch<HistoryViewModel>();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFCFCFC), // Very light grey background
+      backgroundColor: Theme.of(context)
+          .scaffoldBackgroundColor, // Replaced hardcoded grey background
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "History Page",
           style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
+              color: Theme.of(context).textTheme.titleLarge?.color,
+              fontWeight: FontWeight.bold,
+              fontSize: 18),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -46,15 +49,15 @@ class HistoryView extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
+                          color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
                           _formatDate(vm.selectedDate),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
                           ),
                         ),
                       ),
@@ -119,11 +122,11 @@ class HistoryView extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: Theme.of(context).shadowColor.withOpacity(0.04),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -147,18 +150,19 @@ class HistoryView extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     mainItemName, // e.g. "Breakfast: Roti Canai"
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
                     "${meal.totalCalories.toInt()} Kcal",
-                    style: const TextStyle(
-                      color: Color(
-                          0xFF2D62ED), // The blue/purple color from screenshot
+                    style: TextStyle(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary, // Using primary color instead of hardcoded blue
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                     ),

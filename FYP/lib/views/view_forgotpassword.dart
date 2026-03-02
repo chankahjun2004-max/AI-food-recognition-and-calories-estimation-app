@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/vm_forgotpassword.dart';
@@ -28,7 +27,10 @@ class ForgotPasswordView extends StatelessWidget {
                 children: [
                   Text(
                     'Reset Your Password',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: cs.onSurface),
+                    style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: cs.onSurface),
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -72,7 +74,7 @@ class _EmailField extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Theme.of(context).shadowColor.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

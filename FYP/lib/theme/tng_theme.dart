@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class TngColors {
   static const Color primary = Color(0xFF00B894); // green-teal
   static const Color secondary = Color(0xFF00A3A3); // teal
@@ -39,7 +38,8 @@ class TngTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: TngColors.card,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: TngColors.border),
@@ -50,7 +50,8 @@ class TngTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(color: TngColors.primary.withOpacity(0.9), width: 1.5),
+          borderSide:
+              BorderSide(color: TngColors.primary.withOpacity(0.9), width: 1.5),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -58,7 +59,8 @@ class TngTheme {
           backgroundColor: TngColors.primary,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           elevation: 0,
         ),
       ),
@@ -66,7 +68,8 @@ class TngTheme {
         style: FilledButton.styleFrom(
           backgroundColor: TngColors.primary,
           foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
@@ -74,9 +77,103 @@ class TngTheme {
         indicatorColor: TngColors.primary.withOpacity(0.12),
         labelTextStyle: WidgetStateProperty.resolveWith(
           (states) => TextStyle(
-            fontWeight: states.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w600,
+            fontWeight: states.contains(WidgetState.selected)
+                ? FontWeight.w700
+                : FontWeight.w600,
           ),
         ),
+      ),
+    );
+  }
+
+  static ThemeData dark() {
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: TngColors.primary,
+      brightness: Brightness.dark,
+      primary: TngColors.primary,
+      secondary: TngColors.secondary,
+      surface: const Color(0xFF1E1E1E), // Dark surface
+    );
+
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor: const Color(0xFF121212), // Dark background
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: false,
+      ),
+      cardTheme: CardThemeData(
+        color: const Color(0xFF1E1E1E), // Dark card background
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(18)),
+          side: const BorderSide(color: Color(0xFF2C2C2C), width: 1),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: const Color(0xFF1E1E1E), // Dark input background
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Color(0xFF2C2C2C)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Color(0xFF2C2C2C)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide:
+              BorderSide(color: TngColors.primary.withOpacity(0.9), width: 1.5),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: TngColors.primary,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          elevation: 0,
+        ),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          backgroundColor: TngColors.primary,
+          foregroundColor: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        ),
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+        height: 70,
+        backgroundColor: const Color(0xFF1E1E1E),
+        indicatorColor: TngColors.primary.withOpacity(0.2),
+        labelTextStyle: WidgetStateProperty.resolveWith(
+          (states) => TextStyle(
+            fontWeight: states.contains(WidgetState.selected)
+                ? FontWeight.w700
+                : FontWeight.w600,
+            color: states.contains(WidgetState.selected)
+                ? Colors.white
+                : Colors.white70,
+          ),
+        ),
+        iconTheme: WidgetStateProperty.resolveWith(
+          (states) => IconThemeData(
+            color: states.contains(WidgetState.selected)
+                ? Colors.white
+                : Colors.white70,
+          ),
+        ),
+      ),
+      textTheme: const TextTheme(
+        bodyLarge: TextStyle(color: Colors.white),
+        bodyMedium: TextStyle(color: Colors.white70),
       ),
     );
   }

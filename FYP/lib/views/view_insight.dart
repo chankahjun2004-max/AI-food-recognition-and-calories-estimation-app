@@ -33,15 +33,16 @@ class InsightView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Insight",
-          style: TextStyle(color: Colors.black),
+          style:
+              TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        foregroundColor: Colors.black,
+        foregroundColor: Theme.of(context).textTheme.titleLarge?.color,
       ),
-      backgroundColor: const Color(0xFFF6FDF6),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: vm.showEstimationView
@@ -106,7 +107,7 @@ class InsightView extends StatelessWidget {
                           )
                         else
                           ...vm.results
-                              .map((item) => _buildItemTile(item, vm))
+                              .map((item) => _buildItemTile(context, item, vm))
                               .toList(),
                         const SizedBox(height: 20),
                       ],
@@ -138,19 +139,20 @@ class InsightView extends StatelessWidget {
     );
   }
 
-  Widget _buildItemTile(FoodItemModel item, InsightViewModel vm) {
+  Widget _buildItemTile(
+      BuildContext context, FoodItemModel item, InsightViewModel vm) {
     final isSelected = vm.isSelected(item);
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(14),
         border: isSelected
-            ? Border.all(color: const Color(0xFF2D62ED), width: 2)
+            ? Border.all(color: Theme.of(context).colorScheme.primary, width: 2)
             : null,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Theme.of(context).shadowColor.withOpacity(0.05),
             blurRadius: 7,
           ),
         ],
@@ -165,13 +167,18 @@ class InsightView extends StatelessWidget {
             fontSize: 16,
           ),
         ),
-        subtitle: Text(
-          "Conf: ${((double.tryParse(item.confidence) ?? 0) * 100).toStringAsFixed(0)}%",
-          style: const TextStyle(
-            color: Colors.green,
-            fontWeight: FontWeight.w600,
-            fontSize: 14,
-          ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Conf: ${((double.tryParse(item.confidence) ?? 0) * 100).toStringAsFixed(0)}%",
+              style: const TextStyle(
+                color: Colors.green,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
+            ),
+          ],
         ),
         activeColor: const Color(0xFF2D62ED),
         shape: RoundedRectangleBorder(
@@ -221,33 +228,101 @@ class InsightView extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 10),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
+                      color: Theme.of(context).shadowColor.withOpacity(0.1),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
                   ],
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      item.name,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF2D62ED),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            item.name,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF2D62ED),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          item.calories != null
+                              ? "${item.calories!.toStringAsFixed(0)} kcal"
+                              : "N/A kcal",
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      "${item.calories?.toStringAsFixed(0) ?? 'N/A'} kcal",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Text("Weight: ",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        IconButton(
+                          icon: const Icon(Icons.remove_circle_outline,
+                              color: Colors.red),
+                          onPressed: () => vm.updateGrams(
+                              item.name, (item.estimatedGrams ?? 100) - 10),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                        ),
+                        Expanded(
+                          child: Slider(
+                            value:
+                                (item.estimatedGrams ?? 100).clamp(0.0, 1000.0),
+                            min: 0,
+                            max: 1000,
+                            divisions: 100,
+                            activeColor: const Color(0xFF2D62ED),
+                            inactiveColor: Colors.grey.shade300,
+                            onChanged: (value) =>
+                                vm.updateGrams(item.name, value),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.add_circle_outline,
+                              color: Colors.green),
+                          onPressed: () => vm.updateGrams(
+                              item.name, (item.estimatedGrams ?? 100) + 10),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                        ),
+                        SizedBox(
+                          width: 45,
+                          child: Text(
+                            "${(item.estimatedGrams ?? 100).toStringAsFixed(0)}g",
+                            style: const TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.w600),
+                            textAlign: TextAlign.right,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        _macroBadge("Protein", item.protein, Colors.red),
+                        _macroBadge("Fat", item.fat, Colors.orange),
+                        _macroBadge("Carbs", item.carbs, Colors.blue),
+                        _macroBadge("Fiber", item.fiber, Colors.green),
+                        _macroBadge("Sugar", item.sugar, Colors.purple),
+                        _macroBadge("Sodium", item.sodium, Colors.teal,
+                            suffix: "mg"),
+                      ],
                     ),
                   ],
                 ),
@@ -324,6 +399,24 @@ class InsightView extends StatelessWidget {
           ),
           const SizedBox(height: 30),
         ],
+      ),
+    );
+  }
+
+  Widget _macroBadge(String label, double? value, Color color,
+      {String suffix = "g"}) {
+    if (value == null) return const SizedBox();
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color.withOpacity(0.5)),
+      ),
+      child: Text(
+        "$label: ${value.toStringAsFixed(1)}$suffix",
+        style:
+            TextStyle(fontSize: 12, color: color, fontWeight: FontWeight.bold),
       ),
     );
   }

@@ -15,6 +15,15 @@ class FoodItemModel {
   final double? protein;
   final double? fat;
   final double? carbs;
+  final double? fiber;
+  final double? sugar;
+  final double? sodium;
+
+  /// Portion percentage area of the image
+  final double? portionPercentage;
+
+  /// Estimated food weight in grams
+  final double? estimatedGrams;
 
   const FoodItemModel({
     required this.name,
@@ -24,6 +33,11 @@ class FoodItemModel {
     this.protein,
     this.fat,
     this.carbs,
+    this.fiber,
+    this.sugar,
+    this.sodium,
+    this.portionPercentage,
+    this.estimatedGrams,
   });
 
   FoodItemModel copyWith({
@@ -34,6 +48,11 @@ class FoodItemModel {
     double? protein,
     double? fat,
     double? carbs,
+    double? fiber,
+    double? sugar,
+    double? sodium,
+    double? portionPercentage,
+    double? estimatedGrams,
     bool setCaloriesNull = false,
   }) {
     return FoodItemModel(
@@ -44,6 +63,11 @@ class FoodItemModel {
       protein: protein ?? this.protein,
       fat: fat ?? this.fat,
       carbs: carbs ?? this.carbs,
+      fiber: fiber ?? this.fiber,
+      sugar: sugar ?? this.sugar,
+      sodium: sodium ?? this.sodium,
+      portionPercentage: portionPercentage ?? this.portionPercentage,
+      estimatedGrams: estimatedGrams ?? this.estimatedGrams,
     );
   }
 
@@ -52,6 +76,11 @@ class FoodItemModel {
     final p = json['protein'];
     final f = json['fat'];
     final cb = json['carbs'];
+    final fb = json['fiber'];
+    final sg = json['sugar'];
+    final sd = json['sodium'];
+    final pp = json['portion_percentage'] ?? json['portionPercentage'];
+    final eg = json['estimated_grams'] ?? json['estimatedGrams'];
     return FoodItemModel(
       name: (json['name'] ?? '').toString(),
       confidence: (json['confidence'] ?? '').toString(),
@@ -60,6 +89,11 @@ class FoodItemModel {
       protein: p == null ? null : (p as num).toDouble(),
       fat: f == null ? null : (f as num).toDouble(),
       carbs: cb == null ? null : (cb as num).toDouble(),
+      fiber: fb == null ? null : (fb as num).toDouble(),
+      sugar: sg == null ? null : (sg as num).toDouble(),
+      sodium: sd == null ? null : (sd as num).toDouble(),
+      portionPercentage: pp == null ? null : (pp as num).toDouble(),
+      estimatedGrams: eg == null ? null : (eg as num).toDouble(),
     );
   }
 
@@ -73,12 +107,17 @@ class FoodItemModel {
       'protein': protein,
       'fat': fat,
       'carbs': carbs,
+      'fiber': fiber,
+      'sugar': sugar,
+      'sodium': sodium,
+      'portionPercentage': portionPercentage,
+      'estimatedGrams': estimatedGrams,
     };
   }
 
   @override
   String toString() =>
-      'FoodItemModel(name: $name, confidence: $confidence, status: $status, calories: $calories, protein: $protein, fat: $fat, carbs: $carbs)';
+      'FoodItemModel(name: $name, confidence: $confidence, status: $status, calories: $calories, protein: $protein, fat: $fat, carbs: $carbs, fiber: $fiber, sugar: $sugar, sodium: $sodium, portionPercentage: $portionPercentage, estimatedGrams: $estimatedGrams)';
 
   @override
   bool operator ==(Object other) {
@@ -90,12 +129,17 @@ class FoodItemModel {
             other.calories == calories &&
             other.protein == protein &&
             other.fat == fat &&
-            other.carbs == carbs);
+            other.carbs == carbs &&
+            other.fiber == fiber &&
+            other.sugar == sugar &&
+            other.sodium == sodium &&
+            other.portionPercentage == portionPercentage &&
+            other.estimatedGrams == estimatedGrams);
   }
 
   @override
-  int get hashCode =>
-      Object.hash(name, confidence, status, calories, protein, fat, carbs);
+  int get hashCode => Object.hash(name, confidence, status, calories, protein,
+      fat, carbs, fiber, sugar, sodium, portionPercentage, estimatedGrams);
 
   // -- Business Logic / Service Methods --
 
@@ -134,10 +178,18 @@ class FoodItemModel {
                     confidence:
                         (d['confidence'] as num?)?.toStringAsFixed(2) ?? '0.00',
                     status: 'Detected',
-                    calories: null,
+                    calories: d['calories'] != null
+                        ? (d['calories'] as num).toDouble()
+                        : null,
                     protein: null,
                     fat: null,
                     carbs: null,
+                    portionPercentage: d['portion_percentage'] != null
+                        ? (d['portion_percentage'] as num).toDouble()
+                        : null,
+                    estimatedGrams: d['estimated_grams'] != null
+                        ? (d['estimated_grams'] as num).toDouble()
+                        : null,
                   ))
               .toList();
         }

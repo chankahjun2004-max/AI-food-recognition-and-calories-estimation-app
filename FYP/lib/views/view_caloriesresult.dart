@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels/vm_calorieresult.dart';
+
 class CalorieResultView extends StatefulWidget {
   final String? imagePath;
   const CalorieResultView({super.key, this.imagePath});
@@ -20,19 +21,24 @@ class _CalorieResultViewState extends State<CalorieResultView> {
   ];
 
   // Calculate total automatically
-  int get totalCalories => detectedItems.fold(0, (sum, item) => sum + (item['kcal'] as int));
+  int get totalCalories =>
+      detectedItems.fold(0, (sum, item) => sum + (item['kcal'] as int));
 
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<CalorieResultViewModel>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detected Calories', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.white,
+        title: Text('Detected Calories',
+            style: TextStyle(
+                color: Theme.of(context).textTheme.titleLarge?.color,
+                fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon:
+              Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
           onPressed: () => vm.calorieAction(CalorieAction.goBack, context),
         ),
       ),
@@ -51,10 +57,12 @@ class _CalorieResultViewState extends State<CalorieResultView> {
               ),
               child: widget.imagePath != null
                   ? ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.file(File(widget.imagePath!), fit: BoxFit.cover),
-              )
-                  : const Center(child: Icon(Icons.image, size: 50, color: Colors.grey)),
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.file(File(widget.imagePath!),
+                          fit: BoxFit.cover),
+                    )
+                  : const Center(
+                      child: Icon(Icons.image, size: 50, color: Colors.grey)),
             ),
             const SizedBox(height: 25),
 
@@ -76,12 +84,13 @@ class _CalorieResultViewState extends State<CalorieResultView> {
                 margin: const EdgeInsets.only(bottom: 12),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.shade200),
+                  border: Border.all(
+                      color: Theme.of(context).dividerColor.withOpacity(0.1)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.05),
+                      color: Theme.of(context).shadowColor.withOpacity(0.05),
                       blurRadius: 5,
                       offset: const Offset(0, 2),
                     ),
@@ -98,32 +107,30 @@ class _CalorieResultViewState extends State<CalorieResultView> {
                           height: 35,
                           decoration: BoxDecoration(
                               color: const Color(0xFF2D62ED),
-                              borderRadius: BorderRadius.circular(2)
-                          ),
+                              borderRadius: BorderRadius.circular(2)),
                         ),
                         const SizedBox(width: 15),
                         // Name and Grams
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                                item['name'],
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)
-                            ),
+                            Text(item['name'],
+                                style: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w600)),
                             const SizedBox(height: 4),
-                            Text(
-                                '${item['grams'].round()}g',
-                                style: const TextStyle(color: Colors.grey, fontSize: 13)
-                            ),
+                            Text('${item['grams'].round()}g',
+                                style: const TextStyle(
+                                    color: Colors.grey, fontSize: 13)),
                           ],
                         ),
                       ],
                     ),
                     // Calorie Count
-                    Text(
-                        '${item['kcal']} Kcal',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black87)
-                    ),
+                    Text('${item['kcal']} Kcal',
+                        style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87)),
                   ],
                 ),
               );
@@ -135,16 +142,24 @@ class _CalorieResultViewState extends State<CalorieResultView> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFFF0F4FF), // Light blue background
+                color: Theme.of(context)
+                    .colorScheme
+                    .primary
+                    .withOpacity(0.1), // Light blue background
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("Total Calories", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  const Text("Total Calories",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   Text(
                     "$totalCalories Kcal",
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF2D62ED)),
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2D62ED)),
                   ),
                 ],
               ),
@@ -163,10 +178,13 @@ class _CalorieResultViewState extends State<CalorieResultView> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF2D62ED),
                   foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25)),
                   elevation: 2,
                 ),
-                child: const Text("Confirm & Save", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                child: const Text("Confirm & Save",
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
             const SizedBox(height: 20),

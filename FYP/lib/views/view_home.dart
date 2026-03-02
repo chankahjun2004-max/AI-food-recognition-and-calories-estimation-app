@@ -60,7 +60,9 @@ class HomeView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(22),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.06),
+                              color: Theme.of(context)
+                                  .shadowColor
+                                  .withOpacity(0.06),
                               blurRadius: 14,
                               offset: const Offset(0, 6),
                             ),
@@ -138,16 +140,27 @@ class HomeView extends StatelessWidget {
   Widget _buildEmptyCameraBox(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Icon(Icons.camera_alt_rounded, size: 60, color: Colors.grey),
-        SizedBox(height: 15),
+      children: [
+        Icon(Icons.camera_alt_rounded,
+            size: 60, color: Theme.of(context).dividerColor),
+        const SizedBox(height: 15),
         Text(
           "Position your food in the frame",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).textTheme.bodyLarge?.color),
         ),
         Text(
           "Tap to capture",
-          style: TextStyle(fontSize: 13, color: Colors.black45),
+          style: TextStyle(
+              fontSize: 13,
+              color: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.color
+                      ?.withOpacity(0.5) ??
+                  Colors.black45),
         ),
       ],
     );
@@ -182,12 +195,12 @@ class _QuickActions extends StatelessWidget {
           onTap: onTap,
           child: Ink(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(18),
               border: Border.all(color: cs.primary.withOpacity(0.18)),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Theme.of(context).shadowColor.withOpacity(0.05),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 )
@@ -202,7 +215,8 @@ class _QuickActions extends StatelessWidget {
                 Text(
                   label,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                      fontSize: 12, fontWeight: FontWeight.w700),
                 ),
               ],
             ),

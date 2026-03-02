@@ -48,7 +48,6 @@ enum WellnessAction {
 class WellnessInsightViewModel extends ChangeNotifier {
   // COLORS
   final Color primaryColor = const Color(0xFF2D62ED);
-  final Color bgColor = const Color(0xFFF8F9FE);
 
   bool isLoading = false;
 

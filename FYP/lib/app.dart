@@ -3,7 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'models/user_model.dart';
 
+import 'package:provider/provider.dart';
+
 import 'theme/tng_theme.dart';
+import 'viewmodels/vm_theme.dart';
 
 // Views
 import 'views/view_login.dart';
@@ -23,12 +26,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeVm = context.watch<ThemeViewModel>();
+
     return MaterialApp(
       title: 'Food Recognition App',
       debugShowCheckedModeBanner: false,
       theme: TngTheme.light(),
+      darkTheme: TngTheme.dark(),
+      themeMode: themeVm.themeMode,
       home: const _AppEntry(),
-routes: {
+      routes: {
         // Authentication
         '/login': (_) => const LoginView(),
         '/signup': (_) => const SignupView(),
@@ -49,7 +56,6 @@ routes: {
     );
   }
 }
-
 
 class _AppEntry extends StatelessWidget {
   const _AppEntry();

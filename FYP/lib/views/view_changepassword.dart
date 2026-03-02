@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/vm_changepassword.dart';
@@ -24,39 +23,39 @@ class ChangePasswordView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 22),
               child: Column(
                 children: [
-            _buildInputField(
-              label: "Old Password",
-              controller: vm.oldPasswordController,
-              icon: Icons.lock_outline,
-              isPassword: true,
-            ),
-            const SizedBox(height: 18),
-            _buildInputField(
-              label: "New Password",
-              controller: vm.newPasswordController,
-              icon: Icons.lock,
-              isPassword: true,
-            ),
-            const SizedBox(height: 18),
-            _buildInputField(
-              label: "Confirm Password",
-              controller: vm.confirmPasswordController,
-              icon: Icons.lock,
-              isPassword: true,
-            ),
-            const SizedBox(height: 25),
-                    vm.isLoading
-                        ? const CircularProgressIndicator()
-                        : SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () => vm.changePasswordAction(
-                                ChangePasswordAction.changePassword,
-                                context,
-                              ),
-                              child: const Text('Update Password'),
+                  _buildInputField(
+                    label: "Old Password",
+                    controller: vm.oldPasswordController,
+                    icon: Icons.lock_outline,
+                    isPassword: true,
+                  ),
+                  const SizedBox(height: 18),
+                  _buildInputField(
+                    label: "New Password",
+                    controller: vm.newPasswordController,
+                    icon: Icons.lock,
+                    isPassword: true,
+                  ),
+                  const SizedBox(height: 18),
+                  _buildInputField(
+                    label: "Confirm Password",
+                    controller: vm.confirmPasswordController,
+                    icon: Icons.lock,
+                    isPassword: true,
+                  ),
+                  const SizedBox(height: 25),
+                  vm.isLoading
+                      ? const CircularProgressIndicator()
+                      : SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () => vm.changePasswordAction(
+                              ChangePasswordAction.changePassword,
+                              context,
                             ),
+                            child: const Text('Update Password'),
                           ),
+                        ),
                 ],
               ),
             ),
@@ -80,7 +79,7 @@ class ChangePasswordView extends StatelessWidget {
             borderRadius: BorderRadius.circular(14),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Theme.of(context).shadowColor.withOpacity(0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
