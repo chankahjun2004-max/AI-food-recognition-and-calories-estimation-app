@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import '../models/meal_model.dart';
 
 enum HistoryAction {
@@ -11,6 +12,16 @@ enum HistoryAction {
 }
 
 class HistoryViewModel extends ChangeNotifier {
+  static FirebaseAuth _auth = FirebaseAuth.instance;
+  static FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  @visibleForTesting
+  static void setMockInstances(
+      FirebaseAuth mockAuth, FirebaseFirestore mockDb) {
+    _auth = mockAuth;
+    _db = mockDb;
+  }
+
   // State: The currently selected date (Default to Now)
   DateTime _selectedDate = DateTime.now();
   DateTime get selectedDate => _selectedDate;
@@ -38,7 +49,7 @@ class HistoryViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchHistory() async {
-    final user = FirebaseAuth.instance.currentUser;
+    final user = _auth.currentUser;
     if (user == null) {
       _allHistory.clear();
       notifyListeners();
@@ -49,7 +60,7 @@ class HistoryViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final snapshot = await FirebaseFirestore.instance
+      final snapshot = await _db
           .collection('users')
           .doc(user.uid)
           .collection('history')

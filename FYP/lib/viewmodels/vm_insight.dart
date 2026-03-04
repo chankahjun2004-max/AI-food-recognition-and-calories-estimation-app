@@ -6,8 +6,19 @@ import 'package:flutter/material.dart';
 import '../models/food_item_model.dart';
 import '../models/meal_model.dart';
 import '../data/nutrient_data.dart';
+import 'package:meta/meta.dart';
 
 class InsightViewModel extends ChangeNotifier {
+  static FirebaseAuth _auth = FirebaseAuth.instance;
+  static FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  @visibleForTesting
+  static void setMockInstances(
+      FirebaseAuth mockAuth, FirebaseFirestore mockDb) {
+    _auth = mockAuth;
+    _db = mockDb;
+  }
+
   String? imagePath;
   List<FoodItemModel> results = [];
   // Multi-selection state
@@ -151,7 +162,7 @@ class InsightViewModel extends ChangeNotifier {
       return;
     }
 
-    final user = FirebaseAuth.instance.currentUser;
+    final user = _auth.currentUser;
     if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('You must be logged in to save.')),
@@ -184,7 +195,7 @@ class InsightViewModel extends ChangeNotifier {
         imageUrl: null,
       );
 
-      await FirebaseFirestore.instance
+      await _db
           .collection('users')
           .doc(userId)
           .collection('history')

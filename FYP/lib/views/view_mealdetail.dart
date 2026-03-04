@@ -20,6 +20,24 @@ class MealDetailView extends StatelessWidget {
 
     final meal = vm.meal;
 
+    double totalProtein = 0;
+    double totalFat = 0;
+    double totalCarbs = 0;
+    double totalFiber = 0;
+    double totalSugar = 0;
+    double totalSodium = 0;
+
+    if (meal != null) {
+      for (var item in meal.items) {
+        totalProtein += item.protein ?? 0;
+        totalFat += item.fat ?? 0;
+        totalCarbs += item.carbs ?? 0;
+        totalFiber += item.fiber ?? 0;
+        totalSugar += item.sugar ?? 0;
+        totalSodium += item.sodium ?? 0;
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Meal Detail"),
@@ -96,6 +114,20 @@ class MealDetailView extends StatelessWidget {
                       color: Colors.green,
                     ),
                   ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      _macroBadge("Protein", totalProtein, Colors.red),
+                      _macroBadge("Fat", totalFat, Colors.orange),
+                      _macroBadge("Carbs", totalCarbs, Colors.blue),
+                      _macroBadge("Fiber", totalFiber, Colors.green),
+                      _macroBadge("Sugar", totalSugar, Colors.purple),
+                      _macroBadge("Sodium", totalSodium, Colors.teal,
+                          suffix: "mg"),
+                    ],
+                  ),
                   const SizedBox(height: 16),
                   const Text(
                     "Items",
@@ -112,8 +144,31 @@ class MealDetailView extends StatelessWidget {
                         final FoodItemModel item = meal.items[index];
                         return ListTile(
                           title: Text(item.name),
-                          subtitle: Text(
-                              "${item.status}${item.estimatedGrams != null ? ' • ${item.estimatedGrams!.toStringAsFixed(0)}g' : ''}"),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "${item.status}${item.estimatedGrams != null ? ' • ${item.estimatedGrams!.toStringAsFixed(0)}g' : ''}"),
+                              const SizedBox(height: 8),
+                              Wrap(
+                                spacing: 6,
+                                runSpacing: 6,
+                                children: [
+                                  _macroBadge(
+                                      "Protein", item.protein, Colors.red),
+                                  _macroBadge("Fat", item.fat, Colors.orange),
+                                  _macroBadge("Carbs", item.carbs, Colors.blue),
+                                  _macroBadge(
+                                      "Fiber", item.fiber, Colors.green),
+                                  _macroBadge(
+                                      "Sugar", item.sugar, Colors.purple),
+                                  _macroBadge(
+                                      "Sodium", item.sodium, Colors.teal,
+                                      suffix: "mg"),
+                                ],
+                              ),
+                            ],
+                          ),
                           trailing: item.calories == null
                               ? null
                               : Text(
@@ -129,6 +184,24 @@ class MealDetailView extends StatelessWidget {
                 ],
               ),
             ),
+    );
+  }
+
+  Widget _macroBadge(String label, double? value, Color color,
+      {String suffix = "g"}) {
+    if (value == null || value == 0) return const SizedBox();
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: color.withOpacity(0.5)),
+      ),
+      child: Text(
+        "$label: ${value.toStringAsFixed(1)}$suffix",
+        style:
+            TextStyle(fontSize: 12, color: color, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserModel {
@@ -59,8 +60,15 @@ class UserModel {
   // -------------------------
   // Firebase singletons
   // -------------------------
-  static final FirebaseAuth _auth = FirebaseAuth.instance;
-  static final FirebaseFirestore _db = FirebaseFirestore.instance;
+  static FirebaseAuth _auth = FirebaseAuth.instance;
+  static FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  @visibleForTesting
+  static void setMockInstances(
+      FirebaseAuth mockAuth, FirebaseFirestore mockDb) {
+    _auth = mockAuth;
+    _db = mockDb;
+  }
 
   static CollectionReference<Map<String, dynamic>> get _users =>
       _db.collection('users');
@@ -101,7 +109,6 @@ class UserModel {
       throw 'Network timeout. Please try again.';
     }
   }
-
 
   /// Email+Password signup.
   ///
@@ -152,26 +159,25 @@ class UserModel {
     }
   }
 
-
   /// Send reset email (Firebase hosted reset flow)
-static Future<void> sendPasswordReset(String email) async {
-  final trimmed = email.trim();
-  if (trimmed.isEmpty) {
-    throw 'Please enter your email.';
+  static Future<void> sendPasswordReset(String email) async {
+    final trimmed = email.trim();
+    if (trimmed.isEmpty) {
+      throw 'Please enter your email.';
+    }
+
+    try {
+      await _auth
+          .sendPasswordResetEmail(email: trimmed)
+          .timeout(const Duration(seconds: 15));
+    } on FirebaseAuthException catch (e) {
+      throw _friendlyAuthMessage(e);
+    } on TimeoutException {
+      throw 'Network timeout. Please try again.';
+    }
   }
 
-  try {
-    await _auth
-        .sendPasswordResetEmail(email: trimmed)
-        .timeout(const Duration(seconds: 15));
-  } on FirebaseAuthException catch (e) {
-    throw _friendlyAuthMessage(e);
-  } on TimeoutException {
-    throw 'Network timeout. Please try again.';
-  }
-}
-
-/// Change password (re-auth required)
+  /// Change password (re-auth required)
   static Future<void> changePassword(
       String oldPassword, String newPassword) async {
     try {
@@ -189,7 +195,9 @@ static Future<void> sendPasswordReset(String email) async {
       await user
           .reauthenticateWithCredential(credential)
           .timeout(const Duration(seconds: 15));
-      await user.updatePassword(newPassword).timeout(const Duration(seconds: 15));
+      await user
+          .updatePassword(newPassword)
+          .timeout(const Duration(seconds: 15));
     } on FirebaseAuthException catch (e) {
       throw _friendlyAuthMessage(e);
     } on TimeoutException {
@@ -198,10 +206,10 @@ static Future<void> sendPasswordReset(String email) async {
   }
 
   static Future<void> logout() async {
-  // If user explicitly logs out, turn off Remember Me.
-  await setRememberMe(false);
-  await _auth.signOut();
-}
+    // If user explicitly logs out, turn off Remember Me.
+    await setRememberMe(false);
+    await _auth.signOut();
+  }
 
   static String _friendlyAuthMessage(FirebaseAuthException e) {
     switch (e.code) {

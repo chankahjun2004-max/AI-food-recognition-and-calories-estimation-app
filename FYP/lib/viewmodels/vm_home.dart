@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:meta/meta.dart';
 
 import '../models/food_item_model.dart';
 
 enum FoodRecognitionAction { takePhoto, uploadImage, analyze }
 
 class HomeViewModel extends ChangeNotifier {
-  final ImagePicker _picker = ImagePicker();
+  ImagePicker _picker = ImagePicker();
+  Future<List<FoodItemModel>> Function(String) _analyzer =
+      FoodItemModel.analyzeImage;
 
   XFile? capturedImage;
   bool isAnalyzing = false;
   List<FoodItemModel> lastResults = [];
+
+  @visibleForTesting
+  void setMockDependencies(ImagePicker picker,
+      Future<List<FoodItemModel>> Function(String) analyzer) {
+    _picker = picker;
+    _analyzer = analyzer;
+  }
 
   /// Universal function for home actions
   Future<void> foodRecognition(
@@ -39,7 +49,7 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      lastResults = await FoodItemModel.analyzeImage(capturedImage?.path ?? '');
+      lastResults = await _analyzer(capturedImage?.path ?? '');
       if (!context.mounted) return;
       directToResult(context);
     } catch (e) {

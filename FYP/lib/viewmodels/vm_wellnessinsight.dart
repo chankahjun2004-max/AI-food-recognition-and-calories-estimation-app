@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:provider/provider.dart';
+import 'package:meta/meta.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,6 +47,16 @@ enum WellnessAction {
 }
 
 class WellnessInsightViewModel extends ChangeNotifier {
+  static FirebaseAuth _auth = FirebaseAuth.instance;
+  static FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  @visibleForTesting
+  static void setMockInstances(
+      FirebaseAuth mockAuth, FirebaseFirestore mockDb) {
+    _auth = mockAuth;
+    _db = mockDb;
+  }
+
   // COLORS
   final Color primaryColor = const Color(0xFF2D62ED);
 
@@ -56,7 +67,7 @@ class WellnessInsightViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchWellnessData() async {
-    final user = FirebaseAuth.instance.currentUser;
+    final user = _auth.currentUser;
     if (user == null) {
       return;
     }
@@ -65,7 +76,7 @@ class WellnessInsightViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final snapshot = await FirebaseFirestore.instance
+      final snapshot = await _db
           .collection('users')
           .doc(user.uid)
           .collection('history')
@@ -78,11 +89,17 @@ class WellnessInsightViewModel extends ChangeNotifier {
       double todayProtein = 0;
       double todayCarbs = 0;
       double todayFat = 0;
+      double todayFiber = 0;
+      double todaySugar = 0;
+      double todaySodium = 0;
 
       List<double> weekCalories = List.filled(7, 0.0);
       List<double> weekProtein = List.filled(7, 0.0);
       List<double> weekCarbs = List.filled(7, 0.0);
       List<double> weekFat = List.filled(7, 0.0);
+      List<double> weekFiber = List.filled(7, 0.0);
+      List<double> weekSugar = List.filled(7, 0.0);
+      List<double> weekSodium = List.filled(7, 0.0);
 
       // Find the start of the current week (Monday)
       final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
@@ -103,6 +120,9 @@ class WellnessInsightViewModel extends ChangeNotifier {
             todayProtein += item.protein ?? 0;
             todayCarbs += item.carbs ?? 0;
             todayFat += item.fat ?? 0;
+            todayFiber += item.fiber ?? 0;
+            todaySugar += item.sugar ?? 0;
+            todaySodium += item.sodium ?? 0;
           }
         }
 
@@ -119,6 +139,9 @@ class WellnessInsightViewModel extends ChangeNotifier {
             weekProtein[idx] += item.protein ?? 0;
             weekCarbs[idx] += item.carbs ?? 0;
             weekFat[idx] += item.fat ?? 0;
+            weekFiber[idx] += item.fiber ?? 0;
+            weekSugar[idx] += item.sugar ?? 0;
+            weekSodium[idx] += item.sodium ?? 0;
           }
         }
       }
@@ -128,10 +151,10 @@ class WellnessInsightViewModel extends ChangeNotifier {
       goals[NutrientKey.carbs]!.consumed = todayCarbs;
       goals[NutrientKey.fat]!.consumed = todayFat;
 
-      // Default missing nutrients to 0 if not tracked
-      goals[NutrientKey.fiber]!.consumed = 0;
-      goals[NutrientKey.sugar]!.consumed = 0;
-      goals[NutrientKey.sodium]!.consumed = 0;
+      // Assign actual tracked nutrients
+      goals[NutrientKey.fiber]!.consumed = todayFiber;
+      goals[NutrientKey.sugar]!.consumed = todaySugar;
+      goals[NutrientKey.sodium]!.consumed = todaySodium;
 
       trendSeries[NutrientKey.calories] =
           List.generate(7, (i) => FlSpot(i.toDouble(), weekCalories[i]));
@@ -142,11 +165,11 @@ class WellnessInsightViewModel extends ChangeNotifier {
       trendSeries[NutrientKey.fat] =
           List.generate(7, (i) => FlSpot(i.toDouble(), weekFat[i]));
       trendSeries[NutrientKey.fiber] =
-          List.generate(7, (i) => FlSpot(i.toDouble(), 0));
+          List.generate(7, (i) => FlSpot(i.toDouble(), weekFiber[i]));
       trendSeries[NutrientKey.sugar] =
-          List.generate(7, (i) => FlSpot(i.toDouble(), 0));
+          List.generate(7, (i) => FlSpot(i.toDouble(), weekSugar[i]));
       trendSeries[NutrientKey.sodium] =
-          List.generate(7, (i) => FlSpot(i.toDouble(), 0));
+          List.generate(7, (i) => FlSpot(i.toDouble(), weekSodium[i]));
     } catch (e) {
       print("Error fetching wellness data: $e");
     } finally {
@@ -165,8 +188,7 @@ class WellnessInsightViewModel extends ChangeNotifier {
       TextEditingController(text: "70");
   String gender = "Male";
 
-  String get email =>
-      FirebaseAuth.instance.currentUser?.email ?? 'Unknown Email';
+  String get email => _auth.currentUser?.email ?? 'Unknown Email';
 
   // DASHBOARD / TODAY
   int dailyConsumed = 1540;

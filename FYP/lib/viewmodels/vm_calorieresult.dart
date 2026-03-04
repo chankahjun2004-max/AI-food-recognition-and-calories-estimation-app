@@ -15,11 +15,10 @@ class CalorieResultViewModel extends ChangeNotifier {
 
       case CalorieAction.confirmAndSave:
         // Keep current behaviour (view uses mock items). You can integrate History saving in Batch 3.
-        Navigator.pop(context);
-        if (!context.mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Meal Logged to History!')),
         );
+        Navigator.pop(context);
         break;
     }
   }
