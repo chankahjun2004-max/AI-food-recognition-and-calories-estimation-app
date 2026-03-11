@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
 class FoodItemModel {
@@ -25,7 +26,7 @@ class FoodItemModel {
   /// Estimated food weight in grams
   final double? estimatedGrams;
 
-  const FoodItemModel({
+  FoodItemModel({
     required this.name,
     required this.confidence,
     required this.status,
@@ -243,11 +244,24 @@ class FoodItemModel {
   }
 
   // -- Other Methods from UML --
+  FirebaseFirestore? _db;
+
+  FirebaseFirestore get db {
+    if (_db == null) {
+      throw StateError(
+          '[FoodItemModel] Database not connected. Call connect() first.');
+    }
+    return _db!;
+  }
+
   void connect() {
-    // TODO: Implement connect
+    print('[FoodItemModel] connect() called. Using global Firebase instance.');
+    _db = FirebaseFirestore.instance;
   }
 
   void close() {
-    // TODO: Implement close
+    print('[FoodItemModel] close() called. Dropping local reference.');
+    _db = null;
   }
 }
+

@@ -46,7 +46,8 @@ void main() {
         ]
       });
 
-      HistoryViewModel.setMockInstances(mockAuth, mockFirestore);
+      HistoryViewModel.setMockInstances(mockAuth);
+      MealModel.setMockInstances(mockFirestore);
       historyViewModel = HistoryViewModel();
 
       // Wait for constructor fetch to complete

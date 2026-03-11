@@ -5,6 +5,7 @@ import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 
 import 'package:food_recognition_app/models/food_item_model.dart';
+import 'package:food_recognition_app/models/meal_model.dart';
 import 'package:food_recognition_app/viewmodels/vm_insight.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
@@ -34,9 +35,9 @@ void main() {
         '[Recog] Produce a list of detected food items and load arguments',
         (tester) async {
       final testItems = [
-        const FoodItemModel(
+        FoodItemModel(
             name: 'Apple', confidence: '0.9', status: 'Detected', calories: 95),
-        const FoodItemModel(
+        FoodItemModel(
             name: 'Banana',
             confidence: '0.8',
             status: 'Detected',
@@ -55,7 +56,7 @@ void main() {
     });
 
     testWidgets('[Recog] Toggle food item selection', (tester) async {
-      final item = const FoodItemModel(
+      final item = FoodItemModel(
           name: 'Apple', confidence: '0.9', status: 'Detected', calories: 95);
       insightViewModel.loadFromArguments({
         'results': [item],
@@ -71,7 +72,7 @@ void main() {
     });
 
     testWidgets('[Recog] Confirm selection', (tester) async {
-      final item = const FoodItemModel(
+      final item = FoodItemModel(
           name: 'Apple', confidence: '0.9', status: 'Detected', calories: 95);
       insightViewModel.loadFromArguments({
         'results': [item],
@@ -82,7 +83,7 @@ void main() {
     });
 
     testWidgets('[Recog] Save to history', (tester) async {
-      final item = const FoodItemModel(
+      final item = FoodItemModel(
           name: 'Apple', confidence: '0.9', status: 'Detected', calories: 95);
       insightViewModel.loadFromArguments({
         'results': [item],
@@ -108,6 +109,8 @@ void main() {
           .doc('user123')
           .collection('history')
           .get();
+      // Needs to inject mock to MealModel since InsightViewModel uses it to save
+      MealModel.setMockInstances(mockFirestore);
       expect(userDocs.docs.length, 1);
       expect(userDocs.docs.first.data()['totalCalories'], 95.0);
     });

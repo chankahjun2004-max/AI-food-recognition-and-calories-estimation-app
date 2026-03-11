@@ -7,7 +7,7 @@ void main() {
     final testDate = DateTime.utc(2026, 1, 1, 12, 0);
 
     final sampleItems = [
-      const FoodItemModel(
+      FoodItemModel(
         name: 'Chicken Rice',
         confidence: '0.95',
         status: 'Detected',

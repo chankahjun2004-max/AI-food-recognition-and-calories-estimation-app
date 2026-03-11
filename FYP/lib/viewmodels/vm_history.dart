@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
@@ -13,13 +12,11 @@ enum HistoryAction {
 
 class HistoryViewModel extends ChangeNotifier {
   static FirebaseAuth _auth = FirebaseAuth.instance;
-  static FirebaseFirestore _db = FirebaseFirestore.instance;
 
   @visibleForTesting
   static void setMockInstances(
-      FirebaseAuth mockAuth, FirebaseFirestore mockDb) {
+      FirebaseAuth mockAuth) {
     _auth = mockAuth;
-    _db = mockDb;
   }
 
   // State: The currently selected date (Default to Now)
@@ -59,8 +56,18 @@ class HistoryViewModel extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
+    // Create a dummy model just to utilize the connect/close sequence pattern
+    final dummyMeal = MealModel(
+      id: '',
+      dateTime: DateTime.now(),
+      items: [],
+      totalCalories: 0,
+    );
+
     try {
-      final snapshot = await _db
+      dummyMeal.connect();
+      
+      final snapshot = await dummyMeal.db
           .collection('users')
           .doc(user.uid)
           .collection('history')
@@ -69,10 +76,6 @@ class HistoryViewModel extends ChangeNotifier {
 
       _allHistory.clear();
       for (var doc in snapshot.docs) {
-        // We ensure the ID from the doc is part of the model if needed,
-        // though our model has an ID field we can override or use doc.id.
-        // For now, let's assume the stored ID inside the JSON is correct or empty.
-        // We can patch it with doc.id.
         var data = doc.data();
         data['id'] = doc.id;
         _allHistory.add(MealModel.fromJson(data));
@@ -80,6 +83,7 @@ class HistoryViewModel extends ChangeNotifier {
     } catch (e) {
       print("Error fetching history: $e");
     } finally {
+      dummyMeal.close();
       isLoading = false;
       notifyListeners();
     }

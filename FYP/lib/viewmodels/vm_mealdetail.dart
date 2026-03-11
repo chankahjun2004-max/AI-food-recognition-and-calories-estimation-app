@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -53,8 +53,9 @@ class MealDetailViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
+      meal!.connect();
       // 1. Delete from Firestore
-      await FirebaseFirestore.instance
+      await meal!.db
           .collection('users')
           .doc(user.uid)
           .collection('history')
@@ -85,6 +86,7 @@ class MealDetailViewModel extends ChangeNotifier {
         );
       }
     } finally {
+      meal?.close();
       isDeleting = false;
       notifyListeners();
     }

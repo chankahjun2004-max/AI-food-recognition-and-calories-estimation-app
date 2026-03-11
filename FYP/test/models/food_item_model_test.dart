@@ -4,7 +4,7 @@ import 'package:food_recognition_app/models/food_item_model.dart';
 void main() {
   group('FoodItemModel Tests', () {
     test('Initialization works correctly', () {
-      const food = FoodItemModel(
+      final food = FoodItemModel(
         name: 'Apple',
         confidence: 'High',
         status: 'Detected',
@@ -24,7 +24,7 @@ void main() {
     });
 
     test('copyWith works correctly', () {
-      const food = FoodItemModel(
+      final food = FoodItemModel(
         name: 'Apple',
         confidence: 'High',
         status: 'Detected',
@@ -73,7 +73,7 @@ void main() {
     });
 
     test('toJson works correctly', () {
-      const food = FoodItemModel(
+      final food = FoodItemModel(
         name: 'Grape',
         confidence: '0.85',
         status: 'Uncertain',
@@ -95,7 +95,7 @@ void main() {
     });
 
     test('Equality operator and hashCode work correctly', () {
-      const food1 = FoodItemModel(
+      final food1 = FoodItemModel(
         name: 'Apple',
         confidence: 'High',
         status: 'Detected',
@@ -105,7 +105,7 @@ void main() {
         carbs: 25.0,
       );
 
-      const food2 = FoodItemModel(
+      final food2 = FoodItemModel(
         name: 'Apple',
         confidence: 'High',
         status: 'Detected',
@@ -115,7 +115,7 @@ void main() {
         carbs: 25.0,
       );
 
-      const food3 = FoodItemModel(
+      final food3 = FoodItemModel(
         name: 'Banana',
         confidence: 'High',
         status: 'Detected',

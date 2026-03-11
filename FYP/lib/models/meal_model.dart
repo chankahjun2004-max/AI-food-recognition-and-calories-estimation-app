@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'food_item_model.dart';
 
 class MealModel {
@@ -7,7 +8,7 @@ class MealModel {
   final double totalCalories;
   final String? imageUrl;
 
-  const MealModel({
+  MealModel({
     required this.id,
     required this.dateTime,
     required this.items,
@@ -85,11 +86,30 @@ class MealModel {
   }
 
   // -- Other Methods from UML --
+  // -- Other Methods from UML --
+  static FirebaseFirestore? _mockDb;
+  FirebaseFirestore? _db;
+
+  FirebaseFirestore get db {
+    if (_db == null) {
+      throw StateError(
+          '[MealModel] Database not connected. Call connect() first.');
+    }
+    return _db!;
+  }
+
+  // Used strictly for testing to override the default instance
+  static void setMockInstances(FirebaseFirestore mockDb) {
+    _mockDb = mockDb;
+  }
+
   void connect() {
-    // TODO: Implement connect
+    print('[MealModel] connect() called. Using global Firebase instance.');
+    _db = _mockDb ?? FirebaseFirestore.instance;
   }
 
   void close() {
-    // TODO: Implement close
+    print('[MealModel] close() called. Dropping local reference.');
+    _db = null;
   }
 }

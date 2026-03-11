@@ -3,7 +3,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:meta/meta.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../models/meal_model.dart';
@@ -48,13 +47,10 @@ enum WellnessAction {
 
 class WellnessInsightViewModel extends ChangeNotifier {
   static FirebaseAuth _auth = FirebaseAuth.instance;
-  static FirebaseFirestore _db = FirebaseFirestore.instance;
 
   @visibleForTesting
-  static void setMockInstances(
-      FirebaseAuth mockAuth, FirebaseFirestore mockDb) {
+  static void setMockInstances(FirebaseAuth mockAuth) {
     _auth = mockAuth;
-    _db = mockDb;
   }
 
   // COLORS
@@ -75,8 +71,17 @@ class WellnessInsightViewModel extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
+    // Dummy model to utilize the connect/close sequence pattern
+    final dummyMeal = MealModel(
+      id: '',
+      dateTime: DateTime.now(),
+      items: [],
+      totalCalories: 0,
+    );
+
     try {
-      final snapshot = await _db
+      dummyMeal.connect();
+      final snapshot = await dummyMeal.db
           .collection('users')
           .doc(user.uid)
           .collection('history')
@@ -173,6 +178,7 @@ class WellnessInsightViewModel extends ChangeNotifier {
     } catch (e) {
       print("Error fetching wellness data: $e");
     } finally {
+      dummyMeal.close();
       isLoading = false;
       notifyListeners();
     }

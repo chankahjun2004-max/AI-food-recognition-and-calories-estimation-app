@@ -85,7 +85,7 @@ void main() {
         analyzerCalled = true;
         expect(path, 'test_image.jpg');
         return [
-          const FoodItemModel(
+          FoodItemModel(
               name: 'Apple',
               confidence: 'High',
               status: 'Detected',

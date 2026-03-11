@@ -7,6 +7,7 @@ import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 
 import 'package:food_recognition_app/models/user_model.dart';
+import 'package:food_recognition_app/models/meal_model.dart';
 import 'package:food_recognition_app/viewmodels/vm_wellnessinsight.dart';
 import 'package:food_recognition_app/viewmodels/vm_login.dart';
 
@@ -32,8 +33,9 @@ void main() {
       mockAuth = MockFirebaseAuth(mockUser: mockUser, signedIn: true);
       mockFirestore = FakeFirebaseFirestore();
 
-      WellnessInsightViewModel.setMockInstances(mockAuth, mockFirestore);
+      WellnessInsightViewModel.setMockInstances(mockAuth);
       UserModel.setMockInstances(mockAuth, mockFirestore);
+      MealModel.setMockInstances(mockFirestore);
 
       wellnessViewModel = WellnessInsightViewModel();
       loginViewModel = LoginViewModel();
