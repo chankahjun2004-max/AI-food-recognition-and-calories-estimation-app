@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../viewmodels/vm_forgotpassword.dart';
 import '../widgets/tng_header.dart';
 
@@ -14,9 +15,9 @@ class ForgotPasswordView extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const TngHeader(
-            title: 'Forgot Password',
-            subtitle: "We'll send you a reset link",
+          TngHeader(
+            title: 'forgot_password_title'.tr(),
+            subtitle: 'forgot_password_subtitle'.tr(),
             height: 220,
           ),
           Expanded(
@@ -26,7 +27,7 @@ class ForgotPasswordView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Reset Your Password',
+                    'reset_password_label'.tr(),
                     style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -34,7 +35,7 @@ class ForgotPasswordView extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Enter your email and we'll send a reset link.",
+                    'reset_password_instruction'.tr(),
                     style: TextStyle(color: cs.onSurface.withOpacity(0.7)),
                   ),
                   const SizedBox(height: 18),
@@ -51,8 +52,8 @@ class ForgotPasswordView extends StatelessWidget {
                             ),
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size(double.infinity, 56)),
-                            child: const Text('Send Reset Link',
-                                style: TextStyle(
+                            child: Text('reset_password_button'.tr(),
+                                style: const TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold)),
                           ),
                         ),
@@ -88,7 +89,7 @@ class _EmailField extends StatelessWidget {
         controller: controller,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.email, color: cs.primary),
-          labelText: 'Email',
+          labelText: 'email_hint'.tr(),
         ),
       ),
     );

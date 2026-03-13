@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../viewmodels/vm_insight.dart';
 import '../models/food_item_model.dart';
 
@@ -34,7 +35,7 @@ class InsightView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Insight",
+          'insight_title'.tr(),
           style:
               TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
         ),
@@ -71,15 +72,15 @@ class InsightView extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        const Text(
-                          "Detected Items",
+                        Text(
+                          'detected_items_title'.tr(),
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 5),
-                        const Text(
-                          "Select items to estimate calories",
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                        Text(
+                          'select_items_hint'.tr(),
+                          style: const TextStyle(fontSize: 14, color: Colors.grey),
                         ),
                         const SizedBox(height: 10),
                         if (vm.results.isEmpty)
@@ -91,15 +92,15 @@ class InsightView extends StatelessWidget {
                                 const Icon(Icons.info_outline,
                                     size: 40, color: Colors.grey),
                                 const SizedBox(height: 10),
-                                const Text(
-                                  "No items detected.",
-                                  style: TextStyle(
+                                Text(
+                                  'no_items_detected'.tr(),
+                                  style: const TextStyle(
                                       fontSize: 16, color: Colors.grey),
                                 ),
                                 const SizedBox(height: 5),
-                                const Text(
-                                  "Try taking a clearer photo.",
-                                  style: TextStyle(
+                                Text(
+                                  'clearer_photo_hint'.tr(),
+                                  style: const TextStyle(
                                       fontSize: 14, color: Colors.grey),
                                 ),
                               ],
@@ -126,9 +127,9 @@ class InsightView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
-                          "Confirm & Estimate",
-                          style: TextStyle(
+                        child: Text(
+                          'confirm_estimate_button'.tr(),
+                          style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -218,9 +219,9 @@ class InsightView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          const Text(
-            "Calorie Estimation",
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          Text(
+            'calorie_estimation_title'.tr(),
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
           // Selected Items List
@@ -268,8 +269,8 @@ class InsightView extends StatelessWidget {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Text("Weight: ",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text('weight_label'.tr(),
+                            style: const TextStyle(fontWeight: FontWeight.bold)),
                         IconButton(
                           icon: const Icon(Icons.remove_circle_outline,
                               color: Colors.red),
@@ -339,9 +340,9 @@ class InsightView extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Total Estimated:",
-                  style: TextStyle(
+                Text(
+                  'total_estimated_label'.tr(),
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.green,
@@ -371,7 +372,7 @@ class InsightView extends StatelessWidget {
                     side: const BorderSide(color: Colors.red),
                     foregroundColor: Colors.red,
                   ),
-                  child: const Text("Back / Cancel"),
+                  child: Text('back_cancel_button'.tr()),
                 ),
               ),
               const SizedBox(width: 15),
@@ -387,7 +388,7 @@ class InsightView extends StatelessWidget {
                               strokeWidth: 2, color: Colors.white),
                         )
                       : const Icon(Icons.check),
-                  label: Text(vm.isSaving ? 'Saving...' : 'Save Result'),
+                  label: Text(vm.isSaving ? 'saving_label'.tr() : 'save_result_button'.tr()),
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
                     backgroundColor: const Color(0xFF2D62ED),
@@ -422,15 +423,15 @@ class InsightView extends StatelessWidget {
   }
 
   static Widget _placeholderImage() {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
-          SizedBox(height: 8),
+          const Icon(Icons.image_not_supported, size: 50, color: Colors.grey),
+          const SizedBox(height: 8),
           Text(
-            "No image provided",
-            style: TextStyle(color: Colors.grey),
+            'no_image_provided'.tr(),
+            style: const TextStyle(color: Colors.grey),
           ),
         ],
       ),

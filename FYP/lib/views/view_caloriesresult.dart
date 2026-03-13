@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../viewmodels/vm_calorieresult.dart';
 
@@ -29,7 +30,7 @@ class _CalorieResultViewState extends State<CalorieResultView> {
     final vm = context.watch<CalorieResultViewModel>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detected Calories',
+        title: Text('detected_calories_title'.tr(),
             style: TextStyle(
                 color: Theme.of(context).textTheme.titleLarge?.color,
                 fontWeight: FontWeight.bold)),
@@ -67,14 +68,14 @@ class _CalorieResultViewState extends State<CalorieResultView> {
             const SizedBox(height: 25),
 
             // 2. Header
-            const Text(
-              "AI Detected Portions",
+            Text(
+              "ai_detected_portions_title".tr(),
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
-            const Text(
-              "Based on standard Malaysian serving sizes",
-              style: TextStyle(color: Colors.grey, fontSize: 14),
+            Text(
+              "malaysian_serving_sizes_hint".tr(),
+              style: const TextStyle(color: Colors.grey, fontSize: 14),
             ),
             const SizedBox(height: 15),
 
@@ -114,7 +115,7 @@ class _CalorieResultViewState extends State<CalorieResultView> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(item['name'],
+                            Text(item['name'].toString().tr(),
                                 style: const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w600)),
                             const SizedBox(height: 4),
@@ -126,7 +127,7 @@ class _CalorieResultViewState extends State<CalorieResultView> {
                       ],
                     ),
                     // Calorie Count
-                    Text('${item['kcal']} Kcal',
+                    Text("${item['kcal']} ${'k_cal'.tr()}",
                         style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -151,11 +152,11 @@ class _CalorieResultViewState extends State<CalorieResultView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("Total Calories",
+                  Text("total_calories_label".tr(),
                       style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   Text(
-                    "$totalCalories Kcal",
+                    "${totalCalories} ${'k_cal'.tr()}",
                     style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -182,9 +183,9 @@ class _CalorieResultViewState extends State<CalorieResultView> {
                       borderRadius: BorderRadius.circular(25)),
                   elevation: 2,
                 ),
-                child: const Text("Confirm & Save",
+                child: Text("confirm_save_button".tr(),
                     style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
             const SizedBox(height: 20),

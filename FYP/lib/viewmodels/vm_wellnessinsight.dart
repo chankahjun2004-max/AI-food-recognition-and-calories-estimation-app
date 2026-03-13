@@ -204,13 +204,13 @@ class WellnessInsightViewModel extends ChangeNotifier {
 
   /// Week labels for the trend chart (0..6)
   final List<String> weekLabels = const [
-    'Mon',
-    'Tue',
-    'Wed',
-    'Thu',
-    'Fri',
-    'Sat',
-    'Sun',
+    'mon',
+    'tue',
+    'wed',
+    'thu',
+    'fri',
+    'sat',
+    'sun',
   ];
 
   /// Nutrient goals shown in the Insights tab.
@@ -218,7 +218,7 @@ class WellnessInsightViewModel extends ChangeNotifier {
   late final Map<NutrientKey, NutrientGoal> goals = {
     NutrientKey.calories: NutrientGoal(
       key: NutrientKey.calories,
-      label: 'Calories',
+      label: 'calories_label',
       unit: 'kcal',
       icon: Icons.local_fire_department,
       target: dailyTarget.toDouble(),
@@ -226,7 +226,7 @@ class WellnessInsightViewModel extends ChangeNotifier {
     ),
     NutrientKey.protein: NutrientGoal(
       key: NutrientKey.protein,
-      label: 'Protein',
+      label: 'protein_label',
       unit: 'g',
       icon: Icons.fitness_center,
       target: 120,
@@ -234,7 +234,7 @@ class WellnessInsightViewModel extends ChangeNotifier {
     ),
     NutrientKey.carbs: NutrientGoal(
       key: NutrientKey.carbs,
-      label: 'Carbs',
+      label: 'carbs_label',
       unit: 'g',
       icon: Icons.bakery_dining,
       target: 250,
@@ -242,7 +242,7 @@ class WellnessInsightViewModel extends ChangeNotifier {
     ),
     NutrientKey.fat: NutrientGoal(
       key: NutrientKey.fat,
-      label: 'Fat',
+      label: 'fat_label',
       unit: 'g',
       icon: Icons.opacity,
       target: 70,
@@ -250,7 +250,7 @@ class WellnessInsightViewModel extends ChangeNotifier {
     ),
     NutrientKey.fiber: NutrientGoal(
       key: NutrientKey.fiber,
-      label: 'Fiber',
+      label: 'fiber_label',
       unit: 'g',
       icon: Icons.grass,
       target: 30,
@@ -258,7 +258,7 @@ class WellnessInsightViewModel extends ChangeNotifier {
     ),
     NutrientKey.sugar: NutrientGoal(
       key: NutrientKey.sugar,
-      label: 'Sugar',
+      label: 'sugar_label',
       unit: 'g',
       icon: Icons.icecream,
       target: 50,
@@ -266,7 +266,7 @@ class WellnessInsightViewModel extends ChangeNotifier {
     ),
     NutrientKey.sodium: NutrientGoal(
       key: NutrientKey.sodium,
-      label: 'Sodium',
+      label: 'sodium_label',
       unit: 'mg',
       icon: Icons.water_drop,
       target: 2300,

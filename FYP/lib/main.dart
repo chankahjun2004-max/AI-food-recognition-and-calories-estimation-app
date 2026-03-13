@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'app.dart';
 
@@ -22,14 +23,19 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   print('Firebase Initialized Successfully');
 
   runApp(
-    MultiProvider(
-      providers: [
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ms'), Locale('zh')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: MultiProvider(
+        providers: [
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
         ChangeNotifierProvider(create: (_) => SignupViewModel()),
@@ -45,6 +51,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ThemeViewModel()),
       ],
       child: const MyApp(),
+      ),
     ),
   );
 }

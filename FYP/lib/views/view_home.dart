@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import '../viewmodels/vm_home.dart';
 import '../widgets/tng_header.dart';
@@ -17,8 +18,8 @@ class HomeView extends StatelessWidget {
       body: Column(
         children: [
           TngHeader(
-            title: 'Food Recognition',
-            subtitle: 'Scan or upload your meal',
+            title: 'scan_title'.tr(),
+            subtitle: 'scan_subtitle'.tr(),
             height: 180,
             trailing: _ProfileButton(
               onTap: () => Navigator.pushNamed(context, '/wellness'),
@@ -99,7 +100,7 @@ class HomeView extends StatelessWidget {
                                   context,
                                 );
                               },
-                              child: const Text('Analyze'),
+                              child: Text('analyze_button'.tr()),
                             ),
                     ),
 
@@ -116,7 +117,7 @@ class HomeView extends StatelessWidget {
                           );
                         },
                         icon: const Icon(Icons.folder_open),
-                        label: const Text('Upload from Gallery'),
+                        label: Text('gallery_upload_button'.tr()),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: cs.primary,
                           side: BorderSide(color: cs.primary.withOpacity(0.35)),
@@ -146,14 +147,14 @@ class HomeView extends StatelessWidget {
             size: 60, color: Theme.of(context).dividerColor),
         const SizedBox(height: 15),
         Text(
-          "Position your food in the frame",
+          'camera_placeholder'.tr(),
           style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
               color: Theme.of(context).textTheme.bodyLarge?.color),
         ),
         Text(
-          "Tap to capture",
+          'camera_tap_hint'.tr(),
           style: TextStyle(
               fontSize: 13,
               color: Theme.of(context)
@@ -228,13 +229,13 @@ class _QuickActions extends StatelessWidget {
 
     return Row(
       children: [
-        item(icon: Icons.qr_code_scanner, label: 'Scan', onTap: onScan),
+        item(icon: Icons.qr_code_scanner, label: 'scan_action'.tr(), onTap: onScan),
         const SizedBox(width: 10),
-        item(icon: Icons.image_outlined, label: 'Upload', onTap: onUpload),
+        item(icon: Icons.image_outlined, label: 'upload_action'.tr(), onTap: onUpload),
         const SizedBox(width: 10),
-        item(icon: Icons.insights_outlined, label: 'Insight', onTap: onInsight),
+        item(icon: Icons.insights_outlined, label: 'insight_action'.tr(), onTap: onInsight),
         const SizedBox(width: 10),
-        item(icon: Icons.history, label: 'History', onTap: onHistory),
+        item(icon: Icons.history, label: 'history_action_label'.tr(), onTap: onHistory),
       ],
     );
   }

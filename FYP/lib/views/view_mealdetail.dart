@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../viewmodels/vm_mealdetail.dart';
 
 import '../models/food_item_model.dart';
@@ -23,9 +24,9 @@ class MealDetailView extends StatelessWidget {
 
     if (meal == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text("Meal Detail")),
-        body: const Center(
-          child: Text("No meal selected.", style: TextStyle(fontSize: 16)),
+        appBar: AppBar(title: Text("meal_detail_title".tr())),
+        body: Center(
+          child: Text("no_meal_selected".tr(), style: const TextStyle(fontSize: 16)),
         ),
       );
     }
@@ -59,9 +60,9 @@ class MealDetailView extends StatelessWidget {
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             iconTheme: const IconThemeData(color: Colors.white),
             flexibleSpace: FlexibleSpaceBar(
-              title: const Text(
-                "Meal Detail",
-                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              title: Text(
+                "meal_detail_title".tr(),
+                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
               titlePadding: const EdgeInsets.only(left: 48, bottom: 16), // space for back button
               background: hasImage
@@ -71,12 +72,7 @@ class MealDetailView extends StatelessWidget {
                         Image.network(
                           meal.imageUrl!,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Container(
-                            color: Colors.grey.withOpacity(0.2),
-                            child: const Center(
-                              child: Icon(Icons.broken_image, size: 50, color: Colors.grey),
-                            ),
-                          ),
+                          errorBuilder: (_, __, ___) => _placeholderImage(),
                         ),
                         DecoratedBox(
                           decoration: BoxDecoration(
@@ -146,18 +142,18 @@ class MealDetailView extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "${meal.totalCalories.toStringAsFixed(0)} kcal",
+                    "${meal.totalCalories.toInt()} ${'k_cal'.tr()}",
                     style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w900,
-                      color: cs.primary,
-                      letterSpacing: -0.5,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary, // Using primary color instead of hardcoded blue
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  const Text(
-                    "Macronutrients",
-                    style: TextStyle(
+                  Text(
+                    "macronutrients_title".tr(),
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -167,18 +163,18 @@ class MealDetailView extends StatelessWidget {
                     spacing: 12,
                     runSpacing: 12,
                     children: [
-                      _macroBadge("Protein", totalProtein, Colors.red),
-                      _macroBadge("Fat", totalFat, Colors.orange),
-                      _macroBadge("Carbs", totalCarbs, Colors.blue),
-                      _macroBadge("Fiber", totalFiber, Colors.green),
-                      _macroBadge("Sugar", totalSugar, Colors.purple),
-                      _macroBadge("Sodium", totalSodium, Colors.teal, suffix: "mg"),
+                      _macroBadge('protein_label'.tr(), totalProtein, Colors.red),
+                      _macroBadge('fat_label'.tr(), totalFat, Colors.orange),
+                      _macroBadge('carbs_label'.tr(), totalCarbs, Colors.blue),
+                      _macroBadge('fiber_label'.tr(), totalFiber, Colors.green),
+                      _macroBadge('sugar_label'.tr(), totalSugar, Colors.purple),
+                      _macroBadge('sodium_label'.tr(), totalSodium, Colors.teal, suffix: "mg"),
                     ],
                   ),
                   const SizedBox(height: 30),
-                  const Text(
-                    "Items",
-                    style: TextStyle(
+                  Text(
+                    "items_title".tr(),
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -206,7 +202,7 @@ class MealDetailView extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  item.name,
+                                  item.name.tr(),
                                   style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
@@ -221,7 +217,7 @@ class MealDetailView extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Text(
-                                    "${item.calories!.toStringAsFixed(0)} kcal",
+                                    "${item.calories!.toStringAsFixed(0)} ${'k_cal'.tr()}",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: cs.primary,
@@ -231,24 +227,29 @@ class MealDetailView extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 6),
-                          Text(
-                            "${item.status}${item.estimatedGrams != null ? ' • ${item.estimatedGrams!.toStringAsFixed(0)}g' : ''}",
-                            style: TextStyle(
-                              color: cs.onSurface.withOpacity(0.6),
-                              fontWeight: FontWeight.w500,
-                            ),
+                          Builder(
+                            builder: (context) {
+                              final statusText = item.status == 'Detected' ? 'detected_status'.tr() : item.status;
+                              return Text(
+                                "$statusText${item.estimatedGrams != null ? ' • ${item.estimatedGrams!.toStringAsFixed(0)}g' : ''}",
+                                style: TextStyle(
+                                  color: cs.onSurface.withOpacity(0.6),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              );
+                            },
                           ),
                           const SizedBox(height: 16),
                           Wrap(
                             spacing: 8,
                             runSpacing: 8,
                             children: [
-                              _macroBadge("Protein", item.protein, Colors.red),
-                              _macroBadge("Fat", item.fat, Colors.orange),
-                              _macroBadge("Carbs", item.carbs, Colors.blue),
-                              _macroBadge("Fiber", item.fiber, Colors.green),
-                              _macroBadge("Sugar", item.sugar, Colors.purple),
-                              _macroBadge("Sodium", item.sodium, Colors.teal, suffix: "mg"),
+                              _macroBadge('protein_label'.tr(), item.protein, Colors.red),
+                              _macroBadge('fat_label'.tr(), item.fat, Colors.orange),
+                              _macroBadge('carbs_label'.tr(), item.carbs, Colors.blue),
+                              _macroBadge('fiber_label'.tr(), item.fiber, Colors.green),
+                              _macroBadge('sugar_label'.tr(), item.sugar, Colors.purple),
+                              _macroBadge('sodium_label'.tr(), item.sodium, Colors.teal, suffix: "mg"),
                             ],
                           ),
                         ],
@@ -288,6 +289,15 @@ class MealDetailView extends StatelessWidget {
             style: TextStyle(fontSize: 14, color: color, fontWeight: FontWeight.w800),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _placeholderImage() {
+    return Container(
+      color: Colors.grey.withOpacity(0.2),
+      child: const Center(
+        child: Icon(Icons.broken_image, size: 50, color: Colors.grey),
       ),
     );
   }

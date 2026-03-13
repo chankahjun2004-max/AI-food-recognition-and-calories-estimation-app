@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../viewmodels/vm_changepassword.dart';
 import '../widgets/tng_header.dart';
 
@@ -13,9 +14,9 @@ class ChangePasswordView extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const TngHeader(
-            title: 'Change Password',
-            subtitle: 'Keep your account secure',
+          TngHeader(
+            title: 'change_password_title'.tr(),
+            subtitle: 'change_password_subtitle'.tr(),
             height: 160,
           ),
           Expanded(
@@ -24,21 +25,21 @@ class ChangePasswordView extends StatelessWidget {
               child: Column(
                 children: [
                   _buildInputField(
-                    label: "Old Password",
+                    label: "old_password_label".tr(),
                     controller: vm.oldPasswordController,
                     icon: Icons.lock_outline,
                     isPassword: true,
                   ),
                   const SizedBox(height: 18),
                   _buildInputField(
-                    label: "New Password",
+                    label: "new_password_label".tr(),
                     controller: vm.newPasswordController,
                     icon: Icons.lock,
                     isPassword: true,
                   ),
                   const SizedBox(height: 18),
                   _buildInputField(
-                    label: "Confirm Password",
+                    label: "confirm_password_hint".tr(),
                     controller: vm.confirmPasswordController,
                     icon: Icons.lock,
                     isPassword: true,
@@ -53,7 +54,7 @@ class ChangePasswordView extends StatelessWidget {
                               ChangePasswordAction.changePassword,
                               context,
                             ),
-                            child: const Text('Update Password'),
+                            child: Text('update_password_button'.tr()),
                           ),
                         ),
                 ],

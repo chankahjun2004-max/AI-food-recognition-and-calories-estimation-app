@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../viewmodels/vm_signup.dart';
 import '../widgets/tng_header.dart';
 
@@ -14,9 +15,9 @@ class SignupView extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const TngHeader(
-            title: 'Create Account',
-            subtitle: 'Sign up to get started',
+          TngHeader(
+            title: 'create_account'.tr(),
+            subtitle: 'signup_subtitle'.tr(),
             height: 220,
           ),
           Expanded(
@@ -28,19 +29,19 @@ class SignupView extends StatelessWidget {
                     children: [
                       const SizedBox(height: 8),
                       _buildInputField(
-                        label: "Full Name",
+                        label: 'full_name_hint'.tr(),
                         controller: vm.nameController,
                         icon: Icons.person,
                       ),
                       const SizedBox(height: 18),
                       _buildInputField(
-                        label: "Email",
+                        label: 'email_hint'.tr(),
                         controller: vm.emailController,
                         icon: Icons.email,
                       ),
                       const SizedBox(height: 18),
                       _buildInputField(
-                        label: "Password",
+                        label: 'password_hint'.tr(),
                         controller: vm.passwordController,
                         icon: Icons.lock,
                         obscureText: !vm.isPasswordVisible,
@@ -55,7 +56,7 @@ class SignupView extends StatelessWidget {
                       ),
                       const SizedBox(height: 18),
                       _buildInputField(
-                        label: "Confirm Password",
+                        label: 'confirm_password_hint'.tr(),
                         controller: vm.confirmPasswordController,
                         icon: Icons.lock_outline,
                         obscureText: !vm.isConfirmPasswordVisible,
@@ -76,9 +77,9 @@ class SignupView extends StatelessWidget {
                                   vm.signupAction(SignupAction.signup, context),
                               style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(double.infinity, 56)),
-                              child: const Text(
-                                "Sign Up",
-                                style: TextStyle(
+                              child: Text(
+                                'signup_button'.tr(),
+                                style: const TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
@@ -87,7 +88,7 @@ class SignupView extends StatelessWidget {
                         onTap: () =>
                             vm.signupAction(SignupAction.goToLogin, context),
                         child: Text(
-                          "Already have an account? Login",
+                          'login_prompt'.tr(),
                           style: TextStyle(
                             color: cs.primary,
                             fontWeight: FontWeight.w600,

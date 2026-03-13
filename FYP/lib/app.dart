@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'models/user_model.dart';
 
@@ -29,6 +30,9 @@ class MyApp extends StatelessWidget {
     final themeVm = context.watch<ThemeViewModel>();
 
     return MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       title: 'Food Recognition App',
       debugShowCheckedModeBanner: false,
       theme: TngTheme.light(),

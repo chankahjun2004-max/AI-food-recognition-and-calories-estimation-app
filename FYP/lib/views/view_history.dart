@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../viewmodels/vm_history.dart';
 import '../models/meal_model.dart';
 
@@ -15,7 +16,7 @@ class HistoryView extends StatelessWidget {
           .scaffoldBackgroundColor, // Replaced hardcoded grey background
       appBar: AppBar(
         title: Text(
-          "History Page",
+          'history_page_title'.tr(),
           style: TextStyle(
               color: Theme.of(context).textTheme.titleLarge?.color,
               fontWeight: FontWeight.bold,
@@ -73,7 +74,7 @@ class HistoryView extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  "Total: ${vm.totalDailyCalories} Kcal",
+                  'total_calories'.tr(args: [vm.totalDailyCalories.toString()]),
                   style: TextStyle(
                     color: Colors.grey[500],
                     fontSize: 14,
@@ -112,7 +113,7 @@ class HistoryView extends StatelessWidget {
       BuildContext context, HistoryViewModel vm, MealModel meal) {
     // Helper to extract the meal name from items (assuming first item is main dish for now)
     final String mainItemName =
-        meal.items.isNotEmpty ? meal.items.first.name : "Unknown Meal";
+        meal.items.isNotEmpty ? meal.items.first.name.tr() : "unknown_meal".tr();
     final String timeString = _formatTime(meal.dateTime);
 
     return GestureDetector(
@@ -158,7 +159,7 @@ class HistoryView extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    "${meal.totalCalories.toInt()} Kcal",
+                    "${meal.totalCalories.toInt()} ${'k_cal'.tr()}",
                     style: TextStyle(
                       color: Theme.of(context)
                           .colorScheme
@@ -206,7 +207,7 @@ class HistoryView extends StatelessWidget {
           Icon(Icons.fastfood_outlined, size: 60, color: Colors.grey[300]),
           const SizedBox(height: 16),
           Text(
-            "No meals logged for this day",
+            'no_meals_logged'.tr(),
             style: TextStyle(color: Colors.grey[400], fontSize: 16),
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -45,14 +46,14 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
   PopupMenuButton<WellnessAction> _menu(WellnessInsightViewModel vm) {
     return PopupMenuButton<WellnessAction>(
       onSelected: (action) => vm.wellnessAction(action, context),
-      itemBuilder: (context) => const [
+      itemBuilder: (context) => [
         PopupMenuItem(
           value: WellnessAction.goToChangePassword,
-          child: Text('Change Password'),
+          child: Text('change_password_menu'.tr()),
         ),
         PopupMenuItem(
           value: WellnessAction.logout,
-          child: Text('Logout'),
+          child: Text('logout_menu'.tr()),
         ),
       ],
     );
@@ -65,15 +66,15 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
         return Scaffold(
           appBar: AppBar(
             elevation: 0,
-            title: const Text(
-              'Wellness',
-              style: TextStyle(fontWeight: FontWeight.w800),
+            title: Text(
+              'wellness_title'.tr(),
+              style: const TextStyle(fontWeight: FontWeight.w800),
             ),
             actions: [
               IconButton(
                 onPressed: () => vm.fetchWellnessData(),
                 icon: const Icon(Icons.refresh),
-                tooltip: 'Refresh Data',
+                tooltip: 'refresh_data_tooltip'.tr(),
               ),
               _menu(vm),
               const SizedBox(width: 8),
@@ -104,9 +105,9 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                     unselectedLabelColor:
                         Theme.of(context).textTheme.bodyMedium?.color,
                     labelStyle: const TextStyle(fontWeight: FontWeight.w800),
-                    tabs: const [
-                      Tab(text: 'Insights'),
-                      Tab(text: 'Profile'),
+                    tabs: [
+                      Tab(text: 'insights_tab'.tr()),
+                      Tab(text: 'profile_tab'.tr()),
                     ],
                   ),
                 ),
@@ -138,9 +139,9 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
         children: [
           _dailyGoalCard(context, vm),
           const SizedBox(height: 25),
-          const Text(
-            "Nutrition Trends",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          Text(
+            "nutrition_trends_title".tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           const SizedBox(height: 15),
           _trendsCard(context, vm),
@@ -193,9 +194,9 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Daily Goal",
-                        style: TextStyle(color: Colors.white70, fontSize: 16),
+                      Text(
+                        "daily_goal_title".tr(),
+                        style: const TextStyle(color: Colors.white70, fontSize: 16),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -209,16 +210,16 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                       const SizedBox(height: 6),
                       if (exceeded)
                         Text(
-                          "Exceeded by ${exceededBy.toStringAsFixed(0)} ${calories.unit}",
+                          'exceeded_by_label'.tr(args: [exceededBy.toStringAsFixed(0), calories.unit]),
                           style: const TextStyle(
                             color: Color(0xFFFFD2D2),
                             fontWeight: FontWeight.w600,
                           ),
                         )
                       else
-                        const Text(
-                          "You're on track",
-                          style: TextStyle(
+                        Text(
+                          "on_track_label".tr(),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
@@ -251,37 +252,52 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
               _miniGoalRow(vm, NutrientKey.fat),
 
               const SizedBox(height: 10),
-              Row(
+              Wrap(
+                spacing: 12,
+                runSpacing: 8,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  _legendDot(Colors.white),
-                  const SizedBox(width: 6),
-                  const Text('On track',
-                      style: TextStyle(color: Colors.white70, fontSize: 12)),
-                  const SizedBox(width: 12),
-                  _legendDot(Colors.orange),
-                  const SizedBox(width: 6),
-                  Text('Near target',
-                      style: TextStyle(
-                          color: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.color
-                                  ?.withOpacity(0.7) ??
-                              Colors.white70,
-                          fontSize: 12)),
-                  const SizedBox(width: 12),
-                  _legendDot(Colors.red),
-                  const SizedBox(width: 6),
-                  Text('Exceeded',
-                      style: TextStyle(
-                          color: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.color
-                                  ?.withOpacity(0.7) ??
-                              Colors.white70,
-                          fontSize: 12)),
-                  const Spacer(),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _legendDot(Colors.white),
+                      const SizedBox(width: 6),
+                      Text('on_track_label'.tr(),
+                          style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _legendDot(Colors.orange),
+                      const SizedBox(width: 6),
+                      Text('near_target_label'.tr(),
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color
+                                      ?.withOpacity(0.7) ??
+                                  Colors.white70,
+                              fontSize: 12)),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _legendDot(Colors.red),
+                      const SizedBox(width: 6),
+                      Text('exceeded_label'.tr(),
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color
+                                      ?.withOpacity(0.7) ??
+                                  Colors.white70,
+                              fontSize: 12)),
+                    ],
+                  ),
                   Icon(Icons.info_outline,
                       color: goalColor.withOpacity(0.95), size: 18),
                 ],
@@ -389,7 +405,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                     children: [
                       Expanded(
                         child: Text(
-                          'Edit ${goal.label} Target',
+                          'edit_target_title'.tr(args: [goal.label.tr()]),
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w800,
@@ -404,7 +420,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    'Target: ${sliderValue.toStringAsFixed(0)} ${goal.unit}',
+                    'target_label'.tr(args: [sliderValue.toStringAsFixed(0), goal.unit]),
                     style: const TextStyle(fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 10),
@@ -439,13 +455,13 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                           vm.setNutrientTarget(key, sliderValue);
                           Navigator.pop(context);
                         },
-                        child: const Text('Save'),
+                        child: Text('save_button'.tr()),
                       )
                     ],
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Tip: indicators turn orange near target and red when exceeded.',
+                    'nutrient_target_tip'.tr(),
                     style: TextStyle(
                         color: Theme.of(context).textTheme.bodyMedium?.color,
                         fontSize: 12),
@@ -523,7 +539,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                         return Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
-                            vm.weekLabels[i],
+                            vm.weekLabels[i].tr(),
                             style: TextStyle(
                                 fontSize: 11,
                                 color: Theme.of(context)
@@ -570,8 +586,8 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                       return touchedSpots.map((s) {
                         final idx = s.x.toInt();
                         final day = (idx >= 0 && idx < vm.weekLabels.length)
-                            ? vm.weekLabels[idx]
-                            : "Day";
+                            ? vm.weekLabels[idx].tr()
+                            : "Day".tr();
                         return LineTooltipItem(
                           "$day\n${s.y.toStringAsFixed(0)} $unit",
                           const TextStyle(
@@ -598,7 +614,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                           fontWeight: FontWeight.w700,
                         ),
                         labelResolver: (_) =>
-                            "Target ${target.toStringAsFixed(0)}$unit",
+                            'target_trend_label'.tr(args: [target.toStringAsFixed(0), unit]),
                       ),
                     ),
                   ],
@@ -640,7 +656,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
 
     return ChoiceChip(
       label: Text(
-        goal.label,
+        goal.label.tr(),
         style: TextStyle(
           fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
         ),
@@ -713,9 +729,9 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Today's Nutrients",
-            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+          Text(
+            "today_nutrients_title".tr(),
+            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
           ),
           const SizedBox(height: 12),
           ...keys.map(
@@ -726,14 +742,14 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
           ),
           const SizedBox(height: 4),
           Text(
-            "Tip: Tap any nutrient to change its daily target.",
+            "tap_to_change_target_tip".tr(),
             style: TextStyle(
               fontSize: 12,
               color: Theme.of(context)
                   .textTheme
                   .bodyMedium
                   ?.color
-                  ?.withOpacity(0.6),
+                  ?.withOpacity(0.6) ?? Colors.grey,
             ),
           ),
         ],
@@ -780,7 +796,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                       children: [
                         Expanded(
                           child: Text(
-                            goal.label,
+                            goal.label.tr(),
                             style: const TextStyle(fontWeight: FontWeight.w700),
                           ),
                         ),
@@ -821,8 +837,8 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                     const SizedBox(height: 6),
                     Text(
                       exceeded
-                          ? "Over by ${(goal.consumed - goal.target).toStringAsFixed(0)} ${goal.unit}"
-                          : "${diff.toStringAsFixed(0)} ${goal.unit} left",
+                          ? 'exceeded_by_label'.tr(args: [(goal.consumed - goal.target).toStringAsFixed(0), goal.unit])
+                          : 'left_label'.tr(args: [diff.toStringAsFixed(0), goal.unit]),
                       style: TextStyle(
                         fontSize: 12,
                         color: exceeded
@@ -880,10 +896,10 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
               children: [
                 Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        "Personal Information",
-                        style: TextStyle(
+                        "personal_info_title".tr(),
+                        style: const TextStyle(
                             fontWeight: FontWeight.w800, fontSize: 16),
                       ),
                     ),
@@ -900,7 +916,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                           });
                         },
                         icon: const Icon(Icons.edit_outlined, size: 18),
-                        label: const Text('Edit'),
+                        label: Text('edit_button'.tr()),
                       )
                     else
                       Row(
@@ -912,7 +928,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                                 _isProfileEditing = false;
                               });
                             },
-                            child: const Text('Cancel'),
+                             child: Text('cancel_button'.tr()),
                           ),
                           const SizedBox(width: 10),
                           ElevatedButton(
@@ -958,7 +974,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                                 _isProfileEditing = false;
                               });
                             },
-                            child: const Text('Save'),
+                            child: Text('save_button'.tr()),
                           ),
                         ],
                       ),
@@ -966,7 +982,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                 ),
                 const SizedBox(height: 14),
                 _textField(
-                  label: 'Name',
+                  label: 'full_name_hint'.tr(),
                   controller: _nameEditCtrl,
                   enabled: _isProfileEditing,
                 ),
@@ -975,7 +991,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                   children: [
                     Expanded(
                       child: _textField(
-                        label: 'Age',
+                        label: 'age_label'.tr(),
                         controller: _ageEditCtrl,
                         keyboardType: TextInputType.number,
                         enabled: _isProfileEditing,
@@ -999,7 +1015,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                   children: [
                     Expanded(
                       child: _textField(
-                        label: 'Height (cm)',
+                        label: 'height_label'.tr(),
                         controller: _heightEditCtrl,
                         keyboardType: TextInputType.number,
                         enabled: _isProfileEditing,
@@ -1008,7 +1024,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                     const SizedBox(width: 12),
                     Expanded(
                       child: _textField(
-                        label: 'Weight (kg)',
+                        label: 'weight_label_kg'.tr(),
                         controller: _weightEditCtrl,
                         keyboardType: TextInputType.number,
                         enabled: _isProfileEditing,
@@ -1018,7 +1034,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                 ),
                 const SizedBox(height: 12),
                 _textField(
-                  label: 'Email',
+                  label: 'email_hint'.tr(),
                   controller: TextEditingController(text: vm.email),
                   enabled: false,
                 ),
@@ -1032,7 +1048,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                             : () => vm.wellnessAction(
                                 WellnessAction.goToChangePassword, context),
                         icon: const Icon(Icons.lock_outline),
-                        label: const Text('Change Password'),
+                        label: Text('change_password_menu'.tr()),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -1043,7 +1059,7 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
                             : () => vm.wellnessAction(
                                 WellnessAction.logout, context),
                         icon: const Icon(Icons.logout),
-                        label: const Text('Logout'),
+                        label: Text('logout_menu'.tr()),
                       ),
                     ),
                   ],
@@ -1068,60 +1084,106 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "App Settings",
-                  style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+                Text(
+                  "app_settings_title".tr(),
+                  style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
                 ),
                 const SizedBox(height: 16),
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Theme',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color:
-                                  Theme.of(context).textTheme.bodyLarge?.color,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Choose light or dark mode',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color:
-                                  Theme.of(context).textTheme.bodyMedium?.color,
-                            ),
-                          ),
-                        ],
+                    Text(
+                      'theme_label'.tr(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                     ),
-                    SegmentedButton<ThemeMode>(
-                      segments: const [
-                        ButtonSegment(
-                            value: ThemeMode.system,
-                            icon: Icon(Icons.brightness_auto),
-                            label: Text('Auto')),
-                        ButtonSegment(
-                            value: ThemeMode.light,
-                            icon: Icon(Icons.light_mode),
-                            label: Text('Light')),
-                        ButtonSegment(
-                            value: ThemeMode.dark,
-                            icon: Icon(Icons.dark_mode),
-                            label: Text('Dark')),
-                      ],
-                      selected: {themeVm.themeMode},
-                      onSelectionChanged: (Set<ThemeMode> newSelection) {
-                        themeVm.setThemeMode(newSelection.first);
-                      },
-                      style: ButtonStyle(
-                        visualDensity: VisualDensity.compact,
-                        textStyle: WidgetStateProperty.all(
-                            const TextStyle(fontSize: 12)),
+                    const SizedBox(height: 4),
+                    Text(
+                      'choose_theme_subtitle'.tr(),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: SegmentedButton<ThemeMode>(
+                        segments: [
+                          ButtonSegment(
+                              value: ThemeMode.system,
+                              icon: const Icon(Icons.brightness_auto),
+                              label: Text('auto_theme'.tr())),
+                          ButtonSegment(
+                              value: ThemeMode.light,
+                              icon: const Icon(Icons.light_mode),
+                              label: Text('light_theme'.tr())),
+                          ButtonSegment(
+                              value: ThemeMode.dark,
+                              icon: const Icon(Icons.dark_mode),
+                              label: Text('dark_theme'.tr())),
+                        ],
+                        selected: {themeVm.themeMode},
+                        onSelectionChanged: (Set<ThemeMode> newSelection) {
+                          themeVm.setThemeMode(newSelection.first);
+                        },
+                        style: ButtonStyle(
+                          visualDensity: VisualDensity.compact,
+                          textStyle: WidgetStateProperty.all(
+                              const TextStyle(fontSize: 12)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'language_label'.tr(),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'choose_language_subtitle'.tr(),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: SegmentedButton<Locale>(
+                        segments: [
+                          ButtonSegment(
+                            value: const Locale('en'),
+                            label: Text('english_lang'.tr()),
+                          ),
+                          ButtonSegment(
+                            value: const Locale('ms'),
+                            label: Text('malay_lang'.tr()),
+                          ),
+                          ButtonSegment(
+                            value: const Locale('zh'),
+                            label: Text('chinese_lang'.tr()),
+                          ),
+                        ],
+                        selected: {context.locale},
+                        onSelectionChanged: (Set<Locale> newSelection) {
+                          context.setLocale(newSelection.first);
+                        },
+                        style: ButtonStyle(
+                          visualDensity: VisualDensity.compact,
+                          textStyle: WidgetStateProperty.all(
+                              const TextStyle(fontSize: 12)),
+                        ),
                       ),
                     ),
                   ],
@@ -1178,8 +1240,8 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Gender',
+          Text(
+            'gender_label'.tr(),
           style: TextStyle(
             fontWeight: FontWeight.w700,
             color: Theme.of(context).textTheme.bodyMedium?.color,
@@ -1199,10 +1261,10 @@ class _WellnessInsightViewState extends State<WellnessInsightView>
               value: value,
               isExpanded: true,
               dropdownColor: Theme.of(context).cardColor,
-              items: const [
-                DropdownMenuItem(value: 'Male', child: Text('Male')),
-                DropdownMenuItem(value: 'Female', child: Text('Female')),
-                DropdownMenuItem(value: 'Other', child: Text('Other')),
+              items: [
+                DropdownMenuItem(value: 'Male', child: Text('male_gender'.tr())),
+                DropdownMenuItem(value: 'Female', child: Text('female_gender'.tr())),
+                DropdownMenuItem(value: 'Other', child: Text('other_gender'.tr())),
               ],
               onChanged: enabled ? onChanged : null,
             ),

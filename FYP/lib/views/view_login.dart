@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../viewmodels/vm_login.dart';
 import '../widgets/tng_header.dart';
 
@@ -14,9 +15,9 @@ class LoginView extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const TngHeader(
-            title: 'Welcome Back',
-            subtitle: 'Login to your account',
+          TngHeader(
+            title: 'welcome'.tr(),
+            subtitle: 'login_subtitle_text'.tr(),
             height: 220,
           ),
           Expanded(
@@ -28,13 +29,13 @@ class LoginView extends StatelessWidget {
                     children: [
                       const SizedBox(height: 8),
                       _buildInputField(
-                        label: "Email",
+                        label: 'email_hint'.tr(),
                         controller: vm.emailController,
                         icon: Icons.email,
                       ),
                       const SizedBox(height: 18),
                       _buildInputField(
-                        label: "Password",
+                        label: 'password_hint'.tr(),
                         controller: vm.passwordController,
                         icon: Icons.lock,
                         isPassword: true,
@@ -54,14 +55,14 @@ class LoginView extends StatelessWidget {
                                   }
                                 },
                               ),
-                              const Text("Remember me"),
+                              Text("remember_me".tr()),
                             ],
                           ),
                           GestureDetector(
                             onTap: () => vm.authAction(
                                 LoginAction.goToForgotPassword, context),
                             child: Text(
-                              "Forgot Password?",
+                              "forgot_password_title".tr(),
                               style: TextStyle(
                                 color: cs.primary,
                                 fontWeight: FontWeight.bold,
@@ -78,9 +79,9 @@ class LoginView extends StatelessWidget {
                                   vm.authAction(LoginAction.login, context),
                               style: ElevatedButton.styleFrom(
                                   minimumSize: const Size(double.infinity, 56)),
-                              child: const Text(
-                                "Login",
-                                style: TextStyle(
+                              child: Text(
+                                'login_button'.tr(),
+                                style: const TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
@@ -89,12 +90,30 @@ class LoginView extends StatelessWidget {
                         onTap: () =>
                             vm.authAction(LoginAction.goToSignup, context),
                         child: Text(
-                          "Don't have an account? Sign Up",
+                          "signup_prompt".tr(),
                           style: TextStyle(
                             color: cs.primary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            onPressed: () => context.setLocale(const Locale('en')),
+                            child: const Text('EN'),
+                          ),
+                          TextButton(
+                            onPressed: () => context.setLocale(const Locale('ms')),
+                            child: const Text('MS'),
+                          ),
+                          TextButton(
+                            onPressed: () => context.setLocale(const Locale('zh')),
+                            child: const Text('ZH'),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 20),
                     ],
