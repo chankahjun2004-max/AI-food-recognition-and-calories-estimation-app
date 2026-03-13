@@ -29,10 +29,11 @@ class TngTheme {
       ),
       cardTheme: CardThemeData(
         color: TngColors.card,
-        elevation: 0,
+        elevation: 2,
+        shadowColor: TngColors.primary.withOpacity(0.15),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(18)),
-          side: BorderSide(color: TngColors.border, width: 1),
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          side: BorderSide(color: TngColors.border.withOpacity(0.5), width: 1),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -58,10 +59,12 @@ class TngTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: TngColors.primary,
           foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          elevation: 0,
+          elevation: 4,
+          shadowColor: TngColors.primary.withOpacity(0.4),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
@@ -106,9 +109,10 @@ class TngTheme {
       ),
       cardTheme: CardThemeData(
         color: const Color(0xFF1E1E1E), // Dark card background
-        elevation: 0,
+        elevation: 2,
+        shadowColor: Colors.black.withOpacity(0.4),
         shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(18)),
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
           side: const BorderSide(color: Color(0xFF2C2C2C), width: 1),
         ),
       ),
@@ -135,10 +139,12 @@ class TngTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: TngColors.primary,
           foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          elevation: 0,
+          elevation: 4,
+          shadowColor: Colors.black.withOpacity(0.5),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(

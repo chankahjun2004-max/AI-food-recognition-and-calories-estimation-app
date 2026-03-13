@@ -17,7 +17,7 @@ class SignupView extends StatelessWidget {
           const TngHeader(
             title: 'Create Account',
             subtitle: 'Sign up to get started',
-            height: 160,
+            height: 220,
           ),
           Expanded(
             child: Center(
@@ -68,20 +68,21 @@ class SignupView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 35),
                       vm.isLoading
                           ? const CircularProgressIndicator()
                           : ElevatedButton(
                               onPressed: () =>
                                   vm.signupAction(SignupAction.signup, context),
                               style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(double.infinity, 50)),
+                                  minimumSize: const Size(double.infinity, 56)),
                               child: const Text(
                                 "Sign Up",
-                                style: TextStyle(fontSize: 16),
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 25),
                       GestureDetector(
                         onTap: () =>
                             vm.signupAction(SignupAction.goToLogin, context),

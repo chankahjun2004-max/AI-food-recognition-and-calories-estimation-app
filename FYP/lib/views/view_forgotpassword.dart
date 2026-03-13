@@ -17,7 +17,7 @@ class ForgotPasswordView extends StatelessWidget {
           const TngHeader(
             title: 'Forgot Password',
             subtitle: "We'll send you a reset link",
-            height: 160,
+            height: 220,
           ),
           Expanded(
             child: Padding(
@@ -39,7 +39,7 @@ class ForgotPasswordView extends StatelessWidget {
                   ),
                   const SizedBox(height: 18),
                   _EmailField(controller: vm.emailController),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 35),
                   vm.isLoading
                       ? const Center(child: CircularProgressIndicator())
                       : SizedBox(
@@ -49,7 +49,11 @@ class ForgotPasswordView extends StatelessWidget {
                               ForgotPasswordAction.sendResetEmail,
                               context,
                             ),
-                            child: const Text('Send Reset Link'),
+                            style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(double.infinity, 56)),
+                            child: const Text('Send Reset Link',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold)),
                           ),
                         ),
                 ],

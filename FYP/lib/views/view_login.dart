@@ -17,7 +17,7 @@ class LoginView extends StatelessWidget {
           const TngHeader(
             title: 'Welcome Back',
             subtitle: 'Login to your account',
-            height: 160,
+            height: 220,
           ),
           Expanded(
             child: Center(
@@ -70,20 +70,21 @@ class LoginView extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 35),
                       vm.isLoading
                           ? const CircularProgressIndicator()
                           : ElevatedButton(
                               onPressed: () =>
                                   vm.authAction(LoginAction.login, context),
                               style: ElevatedButton.styleFrom(
-                                  minimumSize: const Size(double.infinity, 50)),
+                                  minimumSize: const Size(double.infinity, 56)),
                               child: const Text(
                                 "Login",
-                                style: TextStyle(fontSize: 16),
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 25),
                       GestureDetector(
                         onTap: () =>
                             vm.authAction(LoginAction.goToSignup, context),

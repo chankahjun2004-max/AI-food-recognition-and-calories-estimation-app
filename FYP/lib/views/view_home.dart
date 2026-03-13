@@ -19,6 +19,7 @@ class HomeView extends StatelessWidget {
           TngHeader(
             title: 'Food Recognition',
             subtitle: 'Scan or upload your meal',
+            height: 180,
             trailing: _ProfileButton(
               onTap: () => Navigator.pushNamed(context, '/wellness'),
             ),
