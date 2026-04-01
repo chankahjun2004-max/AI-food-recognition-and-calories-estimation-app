@@ -55,7 +55,7 @@ food_database = {
     "Boiled Egg": {"density": 1.03, "cal_per_g": 1.55},
     "Char Siew": {"density": 1.05, "cal_per_g": 2.50},
     "Chee Cheong Fun": {"density": 1.10, "cal_per_g": 1.10},
-    "Chicken Rice": {"density": 1.05, "cal_per_g": 6.07}, # Plated meal average
+    "Chicken Rice": {"density": 1.05, "cal_per_g": 1.60},
     "Chicken Satay": {"density": 1.05, "cal_per_g": 1.90},
     "Chinese Poach Chicken": {"density": 1.05, "cal_per_g": 1.65},
     "Chinese Sausage": {"density": 1.10, "cal_per_g": 4.80},
@@ -81,7 +81,7 @@ food_database = {
     "Murtabak": {"density": 0.90, "cal_per_g": 2.20},
     "Mushroom": {"density": 0.90, "cal_per_g": 0.35},
     "Nasi Kerabu": {"density": 1.00, "cal_per_g": 1.45},
-    "Nasi Lemak": {"density": 1.05, "cal_per_g": 6.44}, # Plated meal average
+    "Nasi Lemak": {"density": 1.05, "cal_per_g": 2.00},
     "Pan Mee Noodle": {"density": 1.10, "cal_per_g": 3.50},
     "Peanut": {"density": 0.65, "cal_per_g": 5.67}, # Bulk density (loose)
     "Peanut Sauce": {"density": 1.05, "cal_per_g": 2.50},
@@ -158,9 +158,8 @@ async def predict(file: UploadFile = File(...)):
     detections = []
     seg_boxes_list = []
     
-    # Option 2 Assumption: The user always holds the phone ~30 cm away.
-    # At a standard 30cm distance, a phone camera sees roughly a 40cm x 30cm FOV (1200 cm^2 total area)
-    TOTAL_IMAGE_AREA_CM2 = 1200.0
+    # Adjusted FOV area: Reduced to 600.0 (roughly 30cm x 20cm) to halving the weight estimates as requested.
+    TOTAL_IMAGE_AREA_CM2 = 600.0
 
     # Process segmentation results first (Primary for MakanPortionNet)
     if len(results_seg) > 0 and results_seg[0].boxes is not None:
