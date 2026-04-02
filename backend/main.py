@@ -159,7 +159,7 @@ async def predict(file: UploadFile = File(...)):
     seg_boxes_list = []
     
     # Adjusted FOV area: Reduced to 600.0 (roughly 30cm x 20cm) to halving the weight estimates as requested.
-    TOTAL_IMAGE_AREA_CM2 = 600.0
+    TOTAL_IMAGE_AREA_CM2 = 800.0
 
     # Process segmentation results first (Primary for MakanPortionNet)
     if len(results_seg) > 0 and results_seg[0].boxes is not None:
